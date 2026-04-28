@@ -7,3 +7,5 @@ import pe.edu.upc.divitime.entities.Family;
 @Repository
 public interface IFamilyRepository extends JpaRepository<Family, Integer> {
 }
+
+// Es una plantilla para probar el event (actualizarlo)
