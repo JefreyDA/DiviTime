@@ -1,50 +1,16 @@
-package pe.edu.upc.divitime.entities;
-
-import jakarta.persistence.*;
+package pe.edu.upc.divitime.dtos;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "tb_user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private int idUser;
-
-    @Column(name = "nameUser", length = 50, nullable = false)
     private String nameUser;
-
-    @Column(name = "paternalSurNameUser", length = 50, nullable = false)
     private String paternalSurNameUser;
-
-    @Column(name = "maternalSurNameUser", length = 50, nullable = false)
     private String maternalSurNameUser;
-
-    @Column(name = "birthDateUser", nullable = false)
     private LocalDate birthDateUser;
-
-    @Column(name = "emailUser", length = 100, nullable = false)
     private String emailUser;
-
-    @Column(name = "passwordUser", length = 50, nullable = false)
     private String passwordUser;
-
-    @Column(name = "accountCreatedDateUser", nullable = false)
     private LocalDate accountCreatedDateUser;
-
-    public User() {
-    }
-
-    public User(int idUser, String nameUser, String paternalSurNameUser, String maternalSurNameUser, LocalDate birthDateUser, String emailUser, String passwordUser, LocalDate accountCreatedDateUser) {
-        this.idUser = idUser;
-        this.nameUser = nameUser;
-        this.paternalSurNameUser = paternalSurNameUser;
-        this.maternalSurNameUser = maternalSurNameUser;
-        this.birthDateUser = birthDateUser;
-        this.emailUser = emailUser;
-        this.passwordUser = passwordUser;
-        this.accountCreatedDateUser = accountCreatedDateUser;
-    }
 
     public int getIdUser() {
         return idUser;
