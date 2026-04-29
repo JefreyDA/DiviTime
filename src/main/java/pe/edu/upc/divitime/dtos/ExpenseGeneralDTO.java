@@ -5,14 +5,23 @@ import pe.edu.upc.divitime.entities.User;
 
 import java.time.LocalDate;
 
-public class ExpenseDTO {
+public class ExpenseGeneralDTO {
+    private int idExpense;
     private double amountExpense;
     private String descriptionExpense;
     private String urlImageVoucherExpense;
     private LocalDate dateExpense;
     private Boolean statusExpense;
-    private ExpenseType expenseType;
-    private User user;
+    private int idExpenseType;
+    private int idUser;
+
+    public int getIdExpense() {
+        return idExpense;
+    }
+
+    public void setIdExpense(int idExpense) {
+        this.idExpense = idExpense;
+    }
 
     public double getAmountExpense() {
         return amountExpense;
@@ -54,19 +63,19 @@ public class ExpenseDTO {
         this.statusExpense = statusExpense;
     }
 
-    public ExpenseType getExpenseType() {
-        return expenseType;
+    public int getIdExpenseType() {
+        return idExpenseType;
     }
 
-    public void setExpenseType(ExpenseType expenseType) {
-        this.expenseType = expenseType;
+    public void setIdExpenseType(int idExpenseType) {
+        this.idExpenseType = idExpenseType;
     }
 
-    public User getUser() {
-        return user;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }
