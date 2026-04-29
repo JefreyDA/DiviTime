@@ -2,10 +2,19 @@ package pe.edu.upc.divitime.dtos;
 
 import java.time.LocalDate;
 
-public class ChatDTO {
+public class ChatGeneralDTO {
+    private int idChat;
     private LocalDate startDateChat;
     private int frequencyChat;
     private int idUser;
+
+    public int getIdChat() {
+        return idChat;
+    }
+
+    public void setIdChat(int idChat) {
+        this.idChat = idChat;
+    }
 
     public LocalDate getStartDateChat() {
         return startDateChat;

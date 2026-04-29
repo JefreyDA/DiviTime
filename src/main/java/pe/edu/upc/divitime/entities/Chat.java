@@ -16,13 +16,16 @@ public class Chat {
 
     @Column(name = "frequencyChat", nullable = false)
     private int frequencyChat;
-    //Insertar la foregin key de Usuario
 
+    @OneToOne
+    @JoinColumn(name = "idUser")
+    private User user;
 
-    public Chat(int idChat, LocalDate startDateChat, int frequencyChat) {
+    public Chat(int idChat, LocalDate startDateChat, int frequencyChat, User user) {
         this.idChat = idChat;
         this.startDateChat = startDateChat;
         this.frequencyChat = frequencyChat;
+        this.user = user;
     }
 
     public Chat() {
@@ -50,5 +53,13 @@ public class Chat {
 
     public void setFrequencyChat(int frequencyChat) {
         this.frequencyChat = frequencyChat;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
