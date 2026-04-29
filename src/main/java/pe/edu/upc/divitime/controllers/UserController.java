@@ -15,17 +15,5 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/usuarios")
 public class UserController {
-    @Autowired
-    private IUserService uS;
-
-    @GetMapping("/listar")
-    public ResponseEntity<List<UserDTO>> listar(){
-        ModelMapper m = new ModelMapper();
-        List<UserDTO> listaUsuarios=uS.list().stream()
-                .map(y->m.map(y, UserDTO.class))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(listaUsuarios);
-    }
 
 }
