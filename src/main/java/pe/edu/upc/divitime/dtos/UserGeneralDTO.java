@@ -2,12 +2,23 @@ package pe.edu.upc.divitime.dtos;
 
 import java.time.LocalDate;
 
-public class UserDTO {
+public class UserGeneralDTO {
+    private int idUser;
     private String nameUser;
     private String paternalSurNameUser;
     private String maternalSurNameUser;
     private LocalDate birthDateUser;
     private String emailUser;
+    private String passwordUser;
+    private LocalDate accountCreatedDateUser;
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
 
     public String getNameUser() {
         return nameUser;
@@ -47,5 +58,21 @@ public class UserDTO {
 
     public void setEmailUser(String emailUser) {
         this.emailUser = emailUser;
+    }
+
+    public String getPasswordUser() {
+        return passwordUser;
+    }
+
+    public void setPasswordUser(String passwordUser) {
+        this.passwordUser = passwordUser;
+    }
+
+    public LocalDate getAccountCreatedDateUser() {
+        return accountCreatedDateUser;
+    }
+
+    public void setAccountCreatedDateUser(LocalDate accountCreatedDateUser) {
+        this.accountCreatedDateUser = accountCreatedDateUser;
     }
 }

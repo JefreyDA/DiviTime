@@ -41,12 +41,12 @@ public class ExpenseServiceImplements implements IExpenseService {
     }
 
     @Override
-    public List<Expense> findByStatusExpenseTrue() {
+    public List<Expense> listarGastosActivos() {
         return iExpRep.findByStatusExpenseTrue();
     }
 
     @Override
-    public List<Expense> findByStatusExpenseFalse() {
+    public List<Expense> listarGastosEliminados() {
         return iExpRep.findByStatusExpenseFalse();
     }
 }

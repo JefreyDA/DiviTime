@@ -12,6 +12,6 @@ public interface IExpenseService {
     public void deleteLogical(Expense expense);
     public Optional<Expense> listId(int id);
 
-    List<Expense> findByStatusExpenseTrue();
-    List<Expense> findByStatusExpenseFalse();
+    List<Expense> listarGastosActivos();
+    List<Expense> listarGastosEliminados();
 }

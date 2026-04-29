@@ -1,19 +1,5 @@
 package pe.edu.upc.divitime.controllers;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pe.edu.upc.divitime.dtos.UserDTO;
-import pe.edu.upc.divitime.servicesinterfaces.IUserService;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-@RestController
-@RequestMapping("/api/usuarios")
 public class UserController {
-
+    //Parte Dayron, lo completa 28-04-26 hasta las 11:59pm
 }
