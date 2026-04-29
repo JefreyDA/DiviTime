@@ -14,4 +14,5 @@ public interface IEventService {
     public void deleteEvent(int id);
     List<Event> listEventsByDate(LocalDate startDate, LocalDate endDate);
     List<Event> findByTitleEvent(String titleEvent);
+    List<Event> listUpcomingByFamily(int idFamily);
 }

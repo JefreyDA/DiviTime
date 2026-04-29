@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.EventDTO;
+import pe.edu.upc.divitime.dtos.EventFamilyDTO;
 import pe.edu.upc.divitime.dtos.EventGeneralDTO;
 import pe.edu.upc.divitime.entities.Event;
 import pe.edu.upc.divitime.entities.Family;
@@ -173,6 +174,25 @@ public class EventController {
                     .collect(Collectors.toList());
             return  ResponseEntity.ok(lista);
         }
+    }
+
+    @GetMapping("/proximo-eventos-familia/{idFamily}")
+    public ResponseEntity<?> ProximoEventos(@PathVariable int idFamily) {
+
+        List<Event> events = eS.listUpcomingByFamily(idFamily);
+
+        if (events.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No hay eventos próximos para esta familia");
+        }
+
+        ModelMapper m = new ModelMapper();
+
+        List<EventFamilyDTO> result = events.stream()
+                .map(e -> m.map(e, EventFamilyDTO.class))
+                .toList();
+
+        return ResponseEntity.ok(result);
     }
 
 }

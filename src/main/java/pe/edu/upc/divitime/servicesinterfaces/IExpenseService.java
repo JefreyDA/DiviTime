@@ -1,5 +1,6 @@
 package pe.edu.upc.divitime.servicesinterfaces;
 
+import org.springframework.data.repository.query.Param;
 import pe.edu.upc.divitime.entities.Expense;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface IExpenseService {
 
     List<Expense> listarGastosActivos();
     List<Expense> listarGastosEliminados();
+
 }

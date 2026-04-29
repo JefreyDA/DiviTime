@@ -49,4 +49,9 @@ public class EventServiceImplement implements IEventService {
     public List<Event> findByTitleEvent(String titleEvent) {
         return eR.findByTitleEventContainingIgnoreCase(titleEvent);
     }
+
+    @Override
+    public List<Event> listUpcomingByFamily(int idFamily) {
+        return eR.findUpcomingByFamily(idFamily);
+    }
 }
