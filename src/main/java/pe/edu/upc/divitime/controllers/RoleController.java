@@ -20,20 +20,19 @@ public class RoleController {
     @Autowired
     private IRoleService rS;
 
-    @GetMapping("/listRoles")
-    public ResponseEntity<List<RoleDTO>> listar() {
+    @GetMapping("/list-roles")
+    public ResponseEntity<List<RoleDTO>> listaRoles() {
         ModelMapper m = new ModelMapper();
-        List<RoleDTO> listaRoles = rS.list().stream()
+        List<RoleDTO> listRoles = rS.list().stream()
                 .map(y -> m.map(y, RoleDTO.class))
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(listaRoles
-        );
+        return ResponseEntity.ok(listRoles);
 
     }
 
-    @PostMapping("/insertar")
-    public ResponseEntity<RoleGeneralDTO> insertar(@RequestBody RoleGeneralDTO dto) {
+    @PostMapping("/insert-rol")
+    public ResponseEntity<RoleGeneralDTO> insertRol(@RequestBody RoleGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
         Roles r = m.map(dto, Roles.class);
         Roles role = rS.insert(r);
@@ -42,7 +41,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> BuscarId(@PathVariable int id) {
+    public ResponseEntity<?> SeachById(@PathVariable int id) {
         ModelMapper m = new ModelMapper();
         Optional<Roles> role = rS.listId(id);
         if (role.isPresent()) {
@@ -54,10 +53,10 @@ public class RoleController {
         }
     }
 
-    @PutMapping("/actualizar")
-    public ResponseEntity<String> actualizar(@RequestBody RoleGeneralDTO dto) {
-        Optional<Roles> existe = rS.listId((dto.getIdRole()));
-        if (existe.isEmpty()) {
+    @PutMapping("/update-rol")
+    public ResponseEntity<String> updateRol(@RequestBody RoleGeneralDTO dto) {
+        Optional<Roles> exists = rS.listId((dto.getIdRole()));
+        if (exists.isEmpty()) {
             return ResponseEntity.status((HttpStatus.NOT_FOUND))
                     .body("Rol no encontrado");
         }
@@ -67,7 +66,7 @@ public class RoleController {
         }
 
 
-        Roles r = existe.get();
+        Roles r = exists.get();
         r.setNameRole(dto.getNameRole());
 
 
@@ -77,7 +76,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable int id) {
+    public ResponseEntity<String> deleteRol(@PathVariable int id) {
         Optional<Roles> r = rS.listId(id);
         if (r.isPresent()) {
             rS.delete(id);
