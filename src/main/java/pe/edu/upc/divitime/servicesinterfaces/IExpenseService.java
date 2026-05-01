@@ -13,7 +13,11 @@ public interface IExpenseService {
     public void deleteLogical(Expense expense);
     public Optional<Expense> listId(int id);
 
-    List<Expense> listarGastosActivos();
-    List<Expense> listarGastosEliminados();
+    List<Expense> listActiveExpenses();
+    List<Expense> listDeletedExpenses();
+
+    List<Object[]> expensesPercentageByType();
+    List<Object[]> expensesAmountByType();
+    List<Object[]> amountExpensedByUserOnAYearMonthAndFamiliy(int year, int familyId);
 
 }

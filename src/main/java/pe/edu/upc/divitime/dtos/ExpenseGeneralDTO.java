@@ -14,6 +14,7 @@ public class ExpenseGeneralDTO {
     private Boolean statusExpense;
     private int idExpenseType;
     private int idUser;
+    private int idFamily;
 
     public int getIdExpense() {
         return idExpense;
@@ -77,5 +78,13 @@ public class ExpenseGeneralDTO {
 
     public void setIdUser(int idUser) {
         this.idUser = idUser;
+    }
+
+    public int getIdFamily() {
+        return idFamily;
+    }
+
+    public void setIdFamily(int idFamily) {
+        this.idFamily = idFamily;
     }
 }
