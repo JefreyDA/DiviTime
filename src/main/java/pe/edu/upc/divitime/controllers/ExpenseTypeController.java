@@ -19,12 +19,12 @@ public class ExpenseTypeController {
     @Autowired
     private IExpenseTypeService etS;
 
-    @GetMapping("/listar-tipo-gasto")
-    public ResponseEntity<List<ExpenseTypeDTO>> listar() {
+    @GetMapping("/list-expense-types")
+    public ResponseEntity<List<ExpenseTypeDTO>> listExpenseTypes() {
         ModelMapper m = new ModelMapper();
-        List<ExpenseTypeDTO> listaTipoGasto = etS.list().stream()
+        List<ExpenseTypeDTO> listExpenseTypes = etS.list().stream()
                 .map(y -> m.map(y, ExpenseTypeDTO.class))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(listaTipoGasto);
+        return ResponseEntity.ok(listExpenseTypes);
     }
 }

@@ -41,12 +41,27 @@ public class ExpenseServiceImplements implements IExpenseService {
     }
 
     @Override
-    public List<Expense> listarGastosActivos() {
+    public List<Expense> listActiveExpenses() {
         return iExpRep.findByStatusExpenseTrue();
     }
 
     @Override
-    public List<Expense> listarGastosEliminados() {
+    public List<Expense> listDeletedExpenses() {
         return iExpRep.findByStatusExpenseFalse();
+    }
+
+    @Override
+    public List<Object[]> expensesPercentageByType() {
+        return iExpRep.expensesPercentageByType();
+    }
+
+    @Override
+    public List<Object[]> expensesAmountByType() {
+        return iExpRep.expensesAmountByType();
+    }
+
+    @Override
+    public List<Object[]> amountExpensedByUserOnAYearMonthAndFamiliy(int year, int familyId) {
+        return iExpRep.amountExpensedByUserOnAYearMonthAndFamiliy(year, familyId);
     }
 }

@@ -7,6 +7,7 @@ import pe.edu.upc.divitime.repositories.IExpenseTypeRepository;
 import pe.edu.upc.divitime.servicesinterfaces.IExpenseTypeService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExpenseTypeServiceImplements implements IExpenseTypeService {
@@ -16,5 +17,10 @@ public class ExpenseTypeServiceImplements implements IExpenseTypeService {
     @Override
     public List<ExpenseType> list() {
         return iExpTyRep.findAll();
+    }
+
+    @Override
+    public Optional<ExpenseType> listId(int id) {
+        return iExpTyRep.findById(id);
     }
 }
