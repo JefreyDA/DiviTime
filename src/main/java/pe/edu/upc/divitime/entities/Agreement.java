@@ -25,19 +25,19 @@ public class Agreement {
     private Family family;
 
     @ManyToOne
-    @JoinColumn(name = "id_contract", nullable = false)
-    private ContractType contractType;
+    @JoinColumn(name = "id_agreementType", nullable = false)
+    private AgreementType agreementType;
 
     public Agreement() {
     }
 
-    public Agreement(int idAgreement, String titleAgreement, String descriptionAgreement, LocalDateTime creationDate, Family family, ContractType contractType) {
+    public Agreement(int idAgreement, String titleAgreement, String descriptionAgreement, LocalDateTime creationDate, Family family, AgreementType agreementType) {
         this.idAgreement = idAgreement;
         this.titleAgreement = titleAgreement;
         this.descriptionAgreement = descriptionAgreement;
         this.creationDate = creationDate;
         this.family = family;
-        this.contractType = contractType;
+        this.agreementType = agreementType;
     }
 
     public int getIdAgreement() {
@@ -80,11 +80,11 @@ public class Agreement {
         this.family = family;
     }
 
-    public ContractType getContractType() {
-        return contractType;
+    public AgreementType getAgreementType() {
+        return agreementType;
     }
 
-    public void setContractType(ContractType contractType) {
-        this.contractType = contractType;
+    public void setAgreementType(AgreementType agreementType) {
+        this.agreementType = agreementType;
     }
 }

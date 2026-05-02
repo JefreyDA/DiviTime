@@ -9,7 +9,7 @@ public class AgreementGeneralDTO {
     private LocalDateTime creationDate;
 
     private int idFamily;
-    private int idContract;
+    private int idAgreementType;
 
     public int getIdAgreement() {
         return idAgreement;
@@ -51,11 +51,7 @@ public class AgreementGeneralDTO {
         this.idFamily = idFamily;
     }
 
-    public int getIdContract() {
-        return idContract;
-    }
+    public int getIdAgreementType() {return idAgreementType;}
 
-    public void setIdContract(int idContract) {
-        this.idContract = idContract;
-    }
+    public void setIdAgreementType(int idAgreementType) { this.idAgreementType = idAgreementType;}
 }
