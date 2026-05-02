@@ -7,7 +7,7 @@ public class QueryAgreementByFamilyDTO {
     private String descriptionAgreement;
     private LocalDateTime creationDate;
     private String nameFamily;
-    private String nameContract;
+    private String nameAgreement;
 
     public String getTitleAgreement() {
         return titleAgreement;
@@ -41,11 +41,7 @@ public class QueryAgreementByFamilyDTO {
         this.nameFamily = nameFamily;
     }
 
-    public String getNameContract() {
-        return nameContract;
-    }
+    public String getNameAgreement() {return nameAgreement;}
 
-    public void setNameContract(String nameContract) {
-        this.nameContract = nameContract;
-    }
+    public void setNameAgreement(String nameAgreement) {this.nameAgreement = nameAgreement;}
 }

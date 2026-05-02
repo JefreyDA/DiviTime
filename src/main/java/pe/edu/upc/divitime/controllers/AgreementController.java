@@ -9,7 +9,7 @@ import pe.edu.upc.divitime.dtos.QueryAgreementByFamilyDTO;
 import pe.edu.upc.divitime.dtos.AgreementDTO;
 import pe.edu.upc.divitime.dtos.AgreementGeneralDTO;
 import pe.edu.upc.divitime.entities.Agreement;
-import pe.edu.upc.divitime.entities.ContractType;
+import pe.edu.upc.divitime.entities.AgreementType;
 import pe.edu.upc.divitime.entities.Family;
 import pe.edu.upc.divitime.servicesinterfaces.IAgreementService;
 import pe.edu.upc.divitime.servicesinterfaces.IFamilyService;
@@ -49,15 +49,15 @@ public class AgreementController {
         f.setIdFamily(dto.getIdFamily());
         a.setFamily(f);
 
-        ContractType c = new ContractType();
-        c.setIdContract(dto.getIdContract());
-        a.setContractType(c);
+        AgreementType aT = new AgreementType();
+        aT.setIdAgreementType(dto.getIdAgreementType());
+        a.setAgreementType(aT);
 
         Agreement agreement = aS.insert(a);
 
         AgreementGeneralDTO responseDTO = m.map(agreement, AgreementGeneralDTO.class);
         responseDTO.setIdFamily(agreement.getFamily().getIdFamily());
-        responseDTO.setIdContract(agreement.getContractType().getIdContract());
+        responseDTO.setIdAgreementType(agreement.getAgreementType().getIdAgreementType());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
@@ -71,7 +71,7 @@ public class AgreementController {
         if (agreement.isPresent()) {
             AgreementGeneralDTO dto = m.map(agreement.get(), AgreementGeneralDTO.class);
             dto.setIdFamily(agreement.get().getFamily().getIdFamily());
-            dto.setIdContract(agreement.get().getContractType().getIdContract());
+            dto.setIdAgreementType(agreement.get().getAgreementType().getIdAgreementType());
             return ResponseEntity.ok(dto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -104,9 +104,9 @@ public class AgreementController {
         f.setIdFamily(dto.getIdFamily());
         a.setFamily(f);
 
-        ContractType c = new ContractType();
-        c.setIdContract(dto.getIdContract());
-        a.setContractType(c);
+        AgreementType aT = new AgreementType();
+        aT.setIdAgreementType(dto.getIdAgreementType());
+        a.setAgreementType(aT);
 
         aS.update(a);
 
@@ -134,7 +134,7 @@ public class AgreementController {
                     dto.setDescriptionAgreement(y.getDescriptionAgreement());
                     dto.setCreationDate(y.getCreationDate());
                     dto.setNameFamily(y.getFamily().getNameFamily());
-                    dto.setNameContract(y.getContractType().getNameContract());
+                    dto.setNameAgreement(y.getAgreementType().getNameAgreementType());
                     return dto;
                 })
                 .collect(Collectors.toList());
