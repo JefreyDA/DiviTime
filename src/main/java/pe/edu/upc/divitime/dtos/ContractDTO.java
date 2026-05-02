@@ -9,5 +9,6 @@ public class ContractDTO {
 
     public void setNameContract(String nameContract) {
         this.nameContract = nameContract;
+        //wa
     }
 }

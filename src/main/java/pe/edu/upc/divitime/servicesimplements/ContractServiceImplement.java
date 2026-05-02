@@ -12,8 +12,10 @@ import java.util.Optional;
 
 @Service
 public class ContractServiceImplement implements IContractService {
+
     @Autowired
     private IContractRepository cR;
+
     @Override
     public List<ContractType> list() {
         return cR.findAll();

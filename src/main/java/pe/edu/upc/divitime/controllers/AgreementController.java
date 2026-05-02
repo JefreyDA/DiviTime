@@ -12,6 +12,7 @@ import pe.edu.upc.divitime.entities.Agreement;
 import pe.edu.upc.divitime.entities.ContractType;
 import pe.edu.upc.divitime.entities.Family;
 import pe.edu.upc.divitime.servicesinterfaces.IAgreementService;
+import pe.edu.upc.divitime.servicesinterfaces.IFamilyService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,25 +21,29 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/agreement")
 public class AgreementController {
-
     @Autowired
     private IAgreementService aS;
+    @Autowired
+    private IFamilyService fS;
 
     @GetMapping("/listAgreements")
-    public ResponseEntity<List<AgreementDTO>> listar() {
+    public ResponseEntity<List<AgreementDTO>> list() {
         ModelMapper m = new ModelMapper();
 
-        List<AgreementDTO> lista = aS.list().stream()
+        List<AgreementDTO> list = aS.list().stream()
                 .map(y -> m.map(y, AgreementDTO.class))
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(list);
     }
 
-    @PostMapping("/insertar")
-    public ResponseEntity<AgreementGeneralDTO> insertar(@RequestBody AgreementGeneralDTO dto) {
+    @PostMapping("/insert-agreement")
+    public ResponseEntity<?> insert(@RequestBody AgreementGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
         Agreement a = m.map(dto, Agreement.class);
+
+        Optional<Family> fam = fS.listId(dto.getIdFamily());
+        if(fam.isEmpty()){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Familia no encontrada o no existe\n Solicitud de registro rechazado");}
 
         Family f = new Family();
         f.setIdFamily(dto.getIdFamily());
@@ -74,8 +79,8 @@ public class AgreementController {
         }
     }
 
-    @PutMapping("/actualizar")
-    public ResponseEntity<String> actualizar(@RequestBody AgreementGeneralDTO dto) {
+    @PutMapping("/update-agreement")
+    public ResponseEntity<String> update(@RequestBody AgreementGeneralDTO dto) {
 
         Optional<Agreement> existe = aS.listId(dto.getIdAgreement());
 
@@ -95,7 +100,6 @@ public class AgreementController {
         a.setDescriptionAgreement(dto.getDescriptionAgreement());
         a.setCreationDate(dto.getCreationDate());
 
-        // 🔥 Relaciones
         Family f = new Family();
         f.setIdFamily(dto.getIdFamily());
         a.setFamily(f);
@@ -110,7 +114,7 @@ public class AgreementController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable int id) {
+    public ResponseEntity<String> delete(@PathVariable int id) {
         Optional<Agreement> a = aS.listId(id);
 
         if (a.isPresent()) {
@@ -121,8 +125,8 @@ public class AgreementController {
                     .body("Acuerdo no encontrado");
         }
     }
-    @GetMapping("/acuerdos-por-familia/{idFamily}")
-    public ResponseEntity<?> obtenerAcuerdosPorFamilia(@PathVariable int idFamily) {
+    @GetMapping("/agreement-bt-damily/{idFamily}")
+    public ResponseEntity<?> getAgreementFamily(@PathVariable int idFamily) {
         List<QueryAgreementByFamilyDTO> listaBusqueda = aS.listAgreementsByFamilyJPQL(idFamily).stream()
                 .map(y -> {
                     QueryAgreementByFamilyDTO dto = new QueryAgreementByFamilyDTO();

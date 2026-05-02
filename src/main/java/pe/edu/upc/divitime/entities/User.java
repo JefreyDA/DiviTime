@@ -5,46 +5,53 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "tb_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idusuario;
-    @Column(name = "nameUser",length =50 ,nullable = false)
+    private int idUser;
+
+    @Column(name = "nameUser", length = 50, nullable = false)
     private String nameUser;
-    @Column(name = "LastName1",length =50 ,nullable = false)
-    private String lastname1;
-    @Column(name = "LastName2",length =50 ,nullable = false)
-    private String lastname2;
-    @Column(name = "Email",length =50 ,nullable = false)
-    private String email;
-    @Column(name = "Password",length =50 ,nullable = false)
-    private String password;
-    @Column(name = "Birthdate" ,nullable = false)
-    private LocalDate birthdate;
-    @Column(name = "CreationDate" ,nullable = false)
-    private LocalDate creationDate;
+
+    @Column(name = "paternalSurNameUser", length = 50, nullable = false)
+    private String paternalSurNameUser;
+
+    @Column(name = "maternalSurNameUser", length = 50, nullable = false)
+    private String maternalSurNameUser;
+
+    @Column(name = "birthDateUser", nullable = false)
+    private LocalDate birthDateUser;
+
+    @Column(name = "emailUser", length = 100, nullable = false)
+    private String emailUser;
+
+    @Column(name = "passwordUser", length = 50, nullable = false)
+    private String passwordUser;
+
+    @Column(name = "accountCreatedDateUser", nullable = false)
+    private LocalDate accountCreatedDateUser;
 
     public User() {
     }
 
-    public User(int idusuario, String nameUser, String lastname1, String lastname2, String email, String password, LocalDate birthdate, LocalDate creationDate) {
-        this.idusuario = idusuario;
+    public User(int idUser, String nameUser, String paternalSurNameUser, String maternalSurNameUser, LocalDate birthDateUser, String emailUser, String passwordUser, LocalDate accountCreatedDateUser) {
+        this.idUser = idUser;
         this.nameUser = nameUser;
-        this.lastname1 = lastname1;
-        this.lastname2 = lastname2;
-        this.email = email;
-        this.password = password;
-        this.birthdate = birthdate;
-        this.creationDate = creationDate;
+        this.paternalSurNameUser = paternalSurNameUser;
+        this.maternalSurNameUser = maternalSurNameUser;
+        this.birthDateUser = birthDateUser;
+        this.emailUser = emailUser;
+        this.passwordUser = passwordUser;
+        this.accountCreatedDateUser = accountCreatedDateUser;
     }
 
-    public int getIdusuario() {
-        return idusuario;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setIdusuario(int idusuario) {
-        this.idusuario = idusuario;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getNameUser() {
@@ -55,51 +62,51 @@ public class User {
         this.nameUser = nameUser;
     }
 
-    public String getLastname1() {
-        return lastname1;
+    public String getPaternalSurNameUser() {
+        return paternalSurNameUser;
     }
 
-    public void setLastname1(String lastname1) {
-        this.lastname1 = lastname1;
+    public void setPaternalSurNameUser(String paternalSurNameUser) {
+        this.paternalSurNameUser = paternalSurNameUser;
     }
 
-    public String getLastname2() {
-        return lastname2;
+    public String getMaternalSurNameUser() {
+        return maternalSurNameUser;
     }
 
-    public void setLastname2(String lastname2) {
-        this.lastname2 = lastname2;
+    public void setMaternalSurNameUser(String maternalSurNameUser) {
+        this.maternalSurNameUser = maternalSurNameUser;
     }
 
-    public String getEmail() {
-        return email;
+    public LocalDate getBirthDateUser() {
+        return birthDateUser;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setBirthDateUser(LocalDate birthDateUser) {
+        this.birthDateUser = birthDateUser;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmailUser() {
+        return emailUser;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmailUser(String emailUser) {
+        this.emailUser = emailUser;
     }
 
-    public LocalDate getBirthdate() {
-        return birthdate;
+    public String getPasswordUser() {
+        return passwordUser;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
+    public void setPasswordUser(String passwordUser) {
+        this.passwordUser = passwordUser;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
+    public LocalDate getAccountCreatedDateUser() {
+        return accountCreatedDateUser;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+    public void setAccountCreatedDateUser(LocalDate accountCreatedDateUser) {
+        this.accountCreatedDateUser = accountCreatedDateUser;
     }
 }

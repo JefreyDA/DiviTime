@@ -48,5 +48,4 @@ public class QueryAgreementByFamilyDTO {
     public void setNameContract(String nameContract) {
         this.nameContract = nameContract;
     }
-
 }

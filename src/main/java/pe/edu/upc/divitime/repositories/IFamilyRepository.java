@@ -15,3 +15,4 @@ public interface IFamilyRepository extends JpaRepository<Family, Integer> {
     List<Family> listarFamiliasPorRangoFechasJPQL(@Param("fechaInicio") LocalDateTime fechaInicio,
                                                   @Param("fechaFin") LocalDateTime fechaFin);
 }
+

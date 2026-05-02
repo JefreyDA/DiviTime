@@ -3,36 +3,21 @@ package pe.edu.upc.divitime.dtos;
 import java.time.LocalDate;
 
 public class UserGeneralDTO {
-    private int idusuario;
-
-    private String password;
-
+    private int idUser;
     private String nameUser;
+    private String paternalSurNameUser;
+    private String maternalSurNameUser;
+    private LocalDate birthDateUser;
+    private String emailUser;
+    private String passwordUser;
+    private LocalDate accountCreatedDateUser;
 
-    private String lastname1;
-
-    private String lastname2;
-
-    private String email;
-
-    private LocalDate birthdate;
-
-    private LocalDate creationDate;
-
-    public int getIdusuario() {
-        return idusuario;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setIdusuario(int idusuario) {
-        this.idusuario = idusuario;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getNameUser() {
@@ -43,43 +28,51 @@ public class UserGeneralDTO {
         this.nameUser = nameUser;
     }
 
-    public String getLastname1() {
-        return lastname1;
+    public String getPaternalSurNameUser() {
+        return paternalSurNameUser;
     }
 
-    public void setLastname1(String lastname1) {
-        this.lastname1 = lastname1;
+    public void setPaternalSurNameUser(String paternalSurNameUser) {
+        this.paternalSurNameUser = paternalSurNameUser;
     }
 
-    public String getLastname2() {
-        return lastname2;
+    public String getMaternalSurNameUser() {
+        return maternalSurNameUser;
     }
 
-    public void setLastname2(String lastname2) {
-        this.lastname2 = lastname2;
+    public void setMaternalSurNameUser(String maternalSurNameUser) {
+        this.maternalSurNameUser = maternalSurNameUser;
     }
 
-    public String getEmail() {
-        return email;
+    public LocalDate getBirthDateUser() {
+        return birthDateUser;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setBirthDateUser(LocalDate birthDateUser) {
+        this.birthDateUser = birthDateUser;
     }
 
-    public LocalDate getBirthdate() {
-        return birthdate;
+    public String getEmailUser() {
+        return emailUser;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
+    public void setEmailUser(String emailUser) {
+        this.emailUser = emailUser;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
+    public String getPasswordUser() {
+        return passwordUser;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+    public void setPasswordUser(String passwordUser) {
+        this.passwordUser = passwordUser;
+    }
+
+    public LocalDate getAccountCreatedDateUser() {
+        return accountCreatedDateUser;
+    }
+
+    public void setAccountCreatedDateUser(LocalDate accountCreatedDateUser) {
+        this.accountCreatedDateUser = accountCreatedDateUser;
     }
 }
