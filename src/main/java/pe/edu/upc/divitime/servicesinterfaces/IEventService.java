@@ -12,7 +12,7 @@ public interface IEventService {
     public Optional<Event> listEventById(int id);
     public void updateEvent(Event e);
     public void deleteEvent(int id);
-    List<Event> listEventsByDate(LocalDate startDate, LocalDate endDate);
-    List<Event> findByTitleEvent(String titleEvent);
+    List<Event> listEventsByFamily(int id);
+    List<Event> listEventsByUser(int id);
     List<Event> listUpcomingByFamily(int idFamily);
 }
