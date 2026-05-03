@@ -32,22 +32,22 @@ public class EventController {
     private IUserService uS;
 
     @GetMapping("/list-events")
-    public ResponseEntity<?> listar() {
+    public ResponseEntity<?> list() {
         if(eS.listEvents().isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No hay eventos registrados");
         } else {
             ModelMapper m = new ModelMapper();
-            List<EventDTO> listaEventos = eS.listEvents().stream()
+            List<EventDTO> listEvents = eS.listEvents().stream()
                     .map(y -> m.map(y, EventDTO.class))
                     .collect(Collectors.toList());
 
-            return ResponseEntity.ok(listaEventos);
+            return ResponseEntity.ok(listEvents);
         }
     }
 
-    @PostMapping("/registrar")
-    public ResponseEntity<?> insertar(@RequestBody EventGeneralDTO dto) {
+    @PostMapping("/register-events")
+    public ResponseEntity<?> insert(@RequestBody EventGeneralDTO dto) {
 
         Optional<User> user = uS.listId(dto.getIdUser());
         Optional<Family> family = fS.listId(dto.getIdFamily());
@@ -62,9 +62,14 @@ public class EventController {
                     .body("Familia no encontrado");
         }
 
-        if (!dto.getEndDateEvent().isAfter(dto.getStartDateEvent())) {
+        if (dto.getEndDateEvent().isBefore(dto.getStartDateEvent())) {
             return ResponseEntity.badRequest()
                     .body("La fecha fin debe ser mayor que la fecha inicio");
+        }
+
+        if(dto.getTitleEvent() == null) {
+            return ResponseEntity.badRequest()
+                    .body("El titulo del evento no puede ser nulo");
         }
 
         ModelMapper m = new ModelMapper();
@@ -75,7 +80,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<?> findById(@PathVariable int id) {
         ModelMapper m = new ModelMapper();
         Optional<Event> event = eS.listEventById(id);
         if (event.isPresent()) {
@@ -87,14 +92,14 @@ public class EventController {
         }
     }
 
-    @PutMapping("/actualizar")
-    public ResponseEntity<String> actualizar(@RequestBody EventGeneralDTO dto) {
+    @PutMapping("/update-event")
+    public ResponseEntity<String> update(@RequestBody EventGeneralDTO dto) {
 
-        Optional<Event> existe = eS.listEventById(dto.getIdEvent());
+        Optional<Event> event = eS.listEventById(dto.getIdEvent());
         Optional<User> user = uS.listId(dto.getIdUser());
         Optional<Family> family = fS.listId(dto.getIdFamily());
 
-        if (existe.isEmpty()) {
+        if (event.isEmpty()) {
             return ResponseEntity.status((HttpStatus.NOT_FOUND))
                     .body("Evento no encontrado");
         }
@@ -114,12 +119,17 @@ public class EventController {
                     .body("Las fechas no pueden ser nulas");
         }
 
-        if (!dto.getEndDateEvent().isAfter(dto.getStartDateEvent())) {
+        if (dto.getEndDateEvent().isBefore(dto.getStartDateEvent())) {
             return ResponseEntity.badRequest()
                     .body("La fecha fin debe ser mayor que la fecha inicio");
         }
 
-        Event e = existe.get();
+        if(dto.getTitleEvent() == null) {
+            return ResponseEntity.badRequest()
+                    .body("El titulo del evento no puede ser nulo");
+        }
+
+        Event e = event.get();
         e.setTitleEvent(dto.getTitleEvent());
         e.setStartDateEvent(dto.getStartDateEvent());
         e.setEndDateEvent(dto.getEndDateEvent());
@@ -134,7 +144,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable int id) {
+    public ResponseEntity<String> delete(@PathVariable int id) {
         Optional<Event> event = eS.listEventById(id);
         if (event.isPresent()) {
             eS.deleteEvent(id);
@@ -145,35 +155,34 @@ public class EventController {
         }
     }
 
-    @GetMapping("/list-events-date")
-    public ResponseEntity<?> listarPorFecha(
-            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin
-    ) {
-        if(eS.listEventsByDate(fechaInicio, fechaFin).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No hay eventos registrados en esa fecha");
-        } else {
-            ModelMapper m = new ModelMapper();
-            List<EventDTO> listaEventosPorFecha = eS.listEventsByDate(fechaInicio, fechaFin).stream()
-                    .map(y -> m.map(y, EventDTO.class))
-                    .collect(Collectors.toList());
+    @GetMapping("/list-events-by-family/{idFamily}")
+    public ResponseEntity<?> listEventsByFamily(@PathVariable("idFamily") int idFamily){
 
-            return ResponseEntity.ok(listaEventosPorFecha);
+        List<Event> events  = eS.listEventsByFamily(idFamily);
+
+        if(events.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay eventos creados para esta familia");
         }
+
+        ModelMapper m = new ModelMapper();
+        List<EventDTO> list = events.stream().map(y->m.map(y, EventDTO.class))
+                .collect(Collectors.toList());
+        return  ResponseEntity.ok(list);
     }
 
-    @GetMapping("/buscar-evento-titulo")
-    public ResponseEntity<?> buscarEventoTitulo(@RequestParam("tituloEvento") String tituloEvento){
-        if(eS.findByTitleEvent(tituloEvento).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay eventos con ese titulo");
-        } else {
-            ModelMapper m = new ModelMapper();
-            List<EventDTO> lista = eS.findByTitleEvent(tituloEvento)
-                    .stream().map(y->m.map(y, EventDTO.class))
-                    .collect(Collectors.toList());
-            return  ResponseEntity.ok(lista);
+    @GetMapping("/list-events-by-user/{idUser}")
+    public ResponseEntity<?> listEventsByUser(@PathVariable("idUser") int idUser){
+
+        List<Event> events  = eS.listEventsByUser(idUser);
+
+        if(events.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay eventos creados por ese usuario");
         }
+
+        ModelMapper m = new ModelMapper();
+        List<EventDTO> list = events.stream().map(y->m.map(y, EventDTO.class))
+                .collect(Collectors.toList());
+        return  ResponseEntity.ok(list);
     }
 
     @GetMapping("/proximo-eventos-familia/{idFamily}")

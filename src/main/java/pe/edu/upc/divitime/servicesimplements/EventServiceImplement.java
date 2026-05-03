@@ -41,13 +41,13 @@ public class EventServiceImplement implements IEventService {
     }
 
     @Override
-    public List<Event> listEventsByDate(LocalDate startDate, LocalDate endDate) {
-        return eR.listEventsByDate(startDate, endDate);
+    public List<Event> listEventsByFamily(int id) {
+        return eR.listEventsByFamilyId(id);
     }
 
     @Override
-    public List<Event> findByTitleEvent(String titleEvent) {
-        return eR.findByTitleEventContainingIgnoreCase(titleEvent);
+    public List<Event> listEventsByUser(int id) {
+        return eR.listEventsByUserId(id);
     }
 
     @Override
