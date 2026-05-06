@@ -31,8 +31,8 @@ public class UserServiceImplements implements IUserService {
     }
 
     @Override
-    public void delete(int id) {
-        iUsRep.deleteById(id);
+    public void deleteLogical(User user) {
+        iUsRep.save(user);
     }
 
     @Override

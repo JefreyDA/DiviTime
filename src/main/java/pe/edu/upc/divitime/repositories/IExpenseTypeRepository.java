@@ -6,4 +6,5 @@ import pe.edu.upc.divitime.entities.ExpenseType;
 
 @Repository
 public interface IExpenseTypeRepository extends JpaRepository<ExpenseType, Integer> {
+    public ExpenseType findByNameExpenseType(String name);
 }

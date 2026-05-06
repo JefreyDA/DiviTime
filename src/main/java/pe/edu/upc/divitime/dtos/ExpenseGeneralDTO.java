@@ -1,8 +1,5 @@
 package pe.edu.upc.divitime.dtos;
 
-import pe.edu.upc.divitime.entities.ExpenseType;
-import pe.edu.upc.divitime.entities.User;
-
 import java.time.LocalDate;
 
 public class ExpenseGeneralDTO {

@@ -49,6 +49,10 @@ public class ExpenseController {
         c.setDateExpense(LocalDate.now());
         c.setStatusExpense(true);
 
+        if(dto.getAmountExpense() < 0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El monto del gasto no puede ser negativo");
+        }
+
         Optional<User> user = uS.listId(dto.getIdUser());
         if(user.isEmpty()) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado o no existe\n Solicitud de registro rechazado");}
 
@@ -70,6 +74,10 @@ public class ExpenseController {
         if (exists.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Gasto no encontrado");
+        }
+
+        if(dto.getAmountExpense() < 0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El monto del gasto no puede ser negativo");
         }
 
         Optional<ExpenseType> exTy = etS.listId(dto.getIdExpenseType());

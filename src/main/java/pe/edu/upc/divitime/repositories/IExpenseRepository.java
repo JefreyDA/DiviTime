@@ -14,6 +14,8 @@ public interface IExpenseRepository extends JpaRepository<Expense, Integer> {
     List<Expense> findByStatusExpenseTrue();
     List<Expense> findByStatusExpenseFalse();
 
+    List<Expense> findByUser_IdUser(int idUser);
+
     @Query(value = "SELECT\n" +
             "    et.name_expense_type AS \"Tipo de gasto\",\n" +
             "    ROUND(\n" +

@@ -42,6 +42,11 @@ public class ExpenseServiceImplements implements IExpenseService {
     }
 
     @Override
+    public List<Expense> searchByUser_IdUser(int idUser) {
+        return iExpRep.findByUser_IdUser(idUser);
+    }
+
+    @Override
     public List<Expense> listActiveExpenses() {
         return iExpRep.findByStatusExpenseTrue();
     }

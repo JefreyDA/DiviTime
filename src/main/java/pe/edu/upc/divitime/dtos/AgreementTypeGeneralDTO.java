@@ -1,7 +1,5 @@
 package pe.edu.upc.divitime.dtos;
 
-import jakarta.persistence.Column;
-
 public class AgreementTypeGeneralDTO {
     private int idAgreementType;
     private String nameAgreementType;

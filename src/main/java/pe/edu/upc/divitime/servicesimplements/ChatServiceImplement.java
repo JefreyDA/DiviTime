@@ -2,7 +2,6 @@ package pe.edu.upc.divitime.servicesimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.edu.upc.divitime.dtos.ChatUserQuantityDTO;
 import pe.edu.upc.divitime.entities.Chat;
 import pe.edu.upc.divitime.repositories.IChatRepository;
 import pe.edu.upc.divitime.servicesinterfaces.IChatService;

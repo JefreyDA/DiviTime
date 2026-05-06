@@ -4,7 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.ChatGeneralDTO;
 import pe.edu.upc.divitime.dtos.ChatUserQuantityDTO;
@@ -13,7 +12,6 @@ import pe.edu.upc.divitime.repositories.IUserRepository;
 import pe.edu.upc.divitime.servicesinterfaces.IChatService;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
