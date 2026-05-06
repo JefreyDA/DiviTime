@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.FamilyDTO;
 import pe.edu.upc.divitime.dtos.FamilyGeneralDTO;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
     private IFamilyService fS;
 
     @GetMapping("/listFamilies")
+    @PreAuthorize("hasAuthority('MADRE')")
     public ResponseEntity<List<FamilyDTO>> list() {
         ModelMapper m = new ModelMapper();
 
@@ -132,5 +134,5 @@ import java.util.stream.Collectors;
 
         return ResponseEntity.ok(listaBusqueda);
     }
-    }
+}
 
