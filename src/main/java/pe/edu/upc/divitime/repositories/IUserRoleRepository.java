@@ -6,5 +6,5 @@ import pe.edu.upc.divitime.entities.UserRole;
 
 @Repository
 public interface IUserRoleRepository extends JpaRepository<UserRole, Integer> {
-
+    boolean existsByUser_IdUserAndRole_IdRole(Integer idUser, Integer idRole);
 }

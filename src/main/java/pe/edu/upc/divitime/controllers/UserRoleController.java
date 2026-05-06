@@ -4,10 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.UserRoleGeneralDTO;
 import pe.edu.upc.divitime.entities.Roles;
 import pe.edu.upc.divitime.entities.User;
@@ -30,21 +27,77 @@ public class UserRoleController {
 
     @PostMapping("/register-userRole")
     public ResponseEntity<?> insert(@RequestBody UserRoleGeneralDTO dto){
-        Optional<User> user = uS.listId(dto.getUserId());
-        Optional<Roles> role = rS.listId(dto.getUserRole());
+        Optional<User> userOpt = uS.listId(dto.getUserId());
+        Optional<Roles> roleOpt = rS.listId(dto.getUserRole());
+        boolean exists = urS.existsByUserAndRole(dto.getUserId(), dto.getUserRole());
 
-        if(user.isEmpty()){
+        if(userOpt.isEmpty()){
             return ResponseEntity.status((HttpStatus.NOT_FOUND))
                     .body("Usuario no encontrado.");
         }
 
-        //Ingresar validación en la que el usuario ya tenga un rol asignado
-        //Ingresar validaciones si es que no se encuentra el id de Rol o Usuario1
+        if(roleOpt.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Rol no encontrado");
+        }
+
+        if(exists) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("El usuario ya tiene este rol asignado.");
+        }
+
+        UserRole ur = new UserRole();
+        ur.setUser(userOpt.get());
+        ur.setRole(roleOpt.get());
+
+        UserRole userRole = urS.insert(ur);
+
         ModelMapper m = new ModelMapper();
-        UserRole uR = m.map(dto, UserRole.class);
-        UserRole userRole = urS.insert(uR);
+
         UserRoleGeneralDTO resposeDTO = m.map(userRole, UserRoleGeneralDTO.class);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(resposeDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRole(@PathVariable Integer id, @RequestBody UserRoleGeneralDTO dto){
+
+        Optional<UserRole> existingUR = urS.listId(id);
+
+        if(existingUR.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("UserRole no encontrado.");
+        }
+
+        Optional<Roles> role = rS.listId(dto.getUserRole());
+
+        if(role.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Rol no encontrado.");
+        }
+
+        UserRole uR = existingUR.get();
+
+        uR.setRole(role.get());
+
+        UserRole updated = urS.insert(uR);
+
+        ModelMapper m = new ModelMapper();
+        UserRoleGeneralDTO responseDTO = m.map(updated, UserRoleGeneralDTO.class);
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id){
+        Optional<UserRole> userRole = urS.listId(id);
+
+        if(userRole.isPresent()){
+            urS.detele(id);
+            return ResponseEntity.ok("Usuario Rol eliminado correctamente.");
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario Rol no encontrado.");
+        }
     }
 }
