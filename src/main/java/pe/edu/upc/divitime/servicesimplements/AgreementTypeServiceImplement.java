@@ -2,7 +2,6 @@ package pe.edu.upc.divitime.servicesimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.edu.upc.divitime.entities.Agreement;
 import pe.edu.upc.divitime.entities.AgreementType;
 import pe.edu.upc.divitime.repositories.IAgreementTypeRepository;
 import pe.edu.upc.divitime.servicesinterfaces.IAgreementTypeService;

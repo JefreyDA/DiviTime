@@ -9,6 +9,6 @@ public interface IUserService {
     public List<User> list();
     public User insert(User user);
     public void update(User user);
-    public void delete(int id);
+    public void deleteLogical(User user);
     public Optional<User> listId(int id);
 }

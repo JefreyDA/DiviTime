@@ -2,7 +2,6 @@ package pe.edu.upc.divitime.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ import pe.edu.upc.divitime.servicesinterfaces.IEventService;
 import pe.edu.upc.divitime.servicesinterfaces.IFamilyService;
 import pe.edu.upc.divitime.servicesinterfaces.IUserService;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.UserDTO;
 import pe.edu.upc.divitime.dtos.UserGeneralDTO;
+import pe.edu.upc.divitime.entities.Expense;
 import pe.edu.upc.divitime.entities.User;
+import pe.edu.upc.divitime.servicesinterfaces.IExpenseService;
 import pe.edu.upc.divitime.servicesinterfaces.IUserService;
 
 import java.time.LocalDate;
@@ -21,6 +23,9 @@ public class UserController {
 
     @Autowired
     private IUserService uS;
+
+    @Autowired
+    private IExpenseService eS;
 
     @GetMapping("/list-users")
     public ResponseEntity<List<UserDTO>> listaUsers() {
@@ -64,12 +69,18 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         Optional<User> user = uS.listId(id);
 
-        if (user.isPresent()) {
-            uS.delete(id);
-            return ResponseEntity.ok("Usuario eliminado correctamente");
-        } else {
+        if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Usuario no encontrado");
         }
+
+        User u = user.get();
+
+        List<Expense> expensesFounden = eS.searchByUser_IdUser(id);
+        for(Expense e : expensesFounden) {eS.deleteLogical(e);}
+
+        u.setStatusUser(false);
+        uS.deleteLogical(u);
+        return ResponseEntity.ok("Usuario y gastos eliminados correctamente");
     }
 }

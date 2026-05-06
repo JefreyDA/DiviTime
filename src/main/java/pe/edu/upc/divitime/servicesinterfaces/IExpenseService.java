@@ -1,6 +1,5 @@
 package pe.edu.upc.divitime.servicesinterfaces;
 
-import org.springframework.data.repository.query.Param;
 import pe.edu.upc.divitime.entities.Expense;
 
 import java.time.LocalDate;
@@ -14,6 +13,7 @@ public interface IExpenseService {
     public void deleteLogical(Expense expense);
     public Optional<Expense> listId(int id);
 
+    List<Expense> searchByUser_IdUser(int idUser);
     List<Expense> listActiveExpenses();
     List<Expense> listDeletedExpenses();
 

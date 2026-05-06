@@ -2,7 +2,6 @@ package pe.edu.upc.divitime.servicesinterfaces;
 
 import pe.edu.upc.divitime.entities.Event;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

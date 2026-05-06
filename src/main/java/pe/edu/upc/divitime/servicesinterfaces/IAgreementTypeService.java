@@ -1,6 +1,5 @@
 package pe.edu.upc.divitime.servicesinterfaces;
 
-import pe.edu.upc.divitime.entities.Agreement;
 import pe.edu.upc.divitime.entities.AgreementType;
 
 import java.util.List;

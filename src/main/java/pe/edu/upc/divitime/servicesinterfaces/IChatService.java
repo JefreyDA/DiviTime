@@ -1,6 +1,5 @@
 package pe.edu.upc.divitime.servicesinterfaces;
 
-import pe.edu.upc.divitime.dtos.ChatUserQuantityDTO;
 import pe.edu.upc.divitime.entities.Chat;
 
 import java.util.List;
