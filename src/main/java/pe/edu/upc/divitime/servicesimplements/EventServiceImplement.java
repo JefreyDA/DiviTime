@@ -6,7 +6,6 @@ import pe.edu.upc.divitime.entities.Event;
 import pe.edu.upc.divitime.repositories.IEventRespository;
 import pe.edu.upc.divitime.servicesinterfaces.IEventService;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

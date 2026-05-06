@@ -2,14 +2,20 @@ package pe.edu.upc.divitime.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
-@Table(name="roles")
-public class Roles {
+@Table(name="roles", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "rol"})})
+public class Roles implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idRole;
     @Column(name = "NameRole",length = 50,nullable = false)
     private String nameRole;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Roles() {
     }
@@ -33,5 +39,13 @@ public class Roles {
 
     public void setNameRole(String nameRole) {
         this.nameRole = nameRole;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

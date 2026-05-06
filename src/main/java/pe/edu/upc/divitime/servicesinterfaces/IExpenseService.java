@@ -1,8 +1,8 @@
 package pe.edu.upc.divitime.servicesinterfaces;
 
-import org.springframework.data.repository.query.Param;
 import pe.edu.upc.divitime.entities.Expense;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,11 +13,13 @@ public interface IExpenseService {
     public void deleteLogical(Expense expense);
     public Optional<Expense> listId(int id);
 
+    List<Expense> searchByUser_IdUser(int idUser);
     List<Expense> listActiveExpenses();
     List<Expense> listDeletedExpenses();
 
     List<Object[]> expensesPercentageByType();
     List<Object[]> expensesAmountByType();
     List<Object[]> amountExpensedByUserOnAYearMonthAndFamiliy(int year, int familyId);
+    List<Object[]> compareExpensesByFamilyAndPeriod(int familyId, LocalDate startDate, LocalDate endDate);
 
 }

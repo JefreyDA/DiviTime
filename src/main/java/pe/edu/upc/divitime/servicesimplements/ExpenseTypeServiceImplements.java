@@ -23,4 +23,24 @@ public class ExpenseTypeServiceImplements implements IExpenseTypeService {
     public Optional<ExpenseType> listId(int id) {
         return iExpTyRep.findById(id);
     }
+
+    @Override
+    public ExpenseType insert(ExpenseType eT) {
+        return iExpTyRep.save(eT);
+    }
+
+    @Override
+    public void update(ExpenseType expenseType) {
+        iExpTyRep.save(expenseType);
+    }
+
+    @Override
+    public void delete(int id) {
+        iExpTyRep.deleteById(id);
+    }
+
+    @Override
+    public ExpenseType SearchByNameExpenseType(String name) {
+        return iExpTyRep.findByNameExpenseType(name);
+    }
 }

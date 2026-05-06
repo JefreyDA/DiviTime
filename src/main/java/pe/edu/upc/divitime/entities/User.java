@@ -3,6 +3,7 @@ package pe.edu.upc.divitime.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
@@ -32,10 +33,17 @@ public class User {
     @Column(name = "accountCreatedDateUser", nullable = false)
     private LocalDate accountCreatedDateUser;
 
+    @Column(name = "statusUser", nullable = false)
+    private Boolean statusUser;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Roles> roles;
+
     public User() {
     }
 
-    public User(int idUser, String nameUser, String paternalSurNameUser, String maternalSurNameUser, LocalDate birthDateUser, String emailUser, String passwordUser, LocalDate accountCreatedDateUser) {
+    public User(int idUser, String nameUser, String paternalSurNameUser, String maternalSurNameUser, LocalDate birthDateUser, String emailUser, String passwordUser, LocalDate accountCreatedDateUser, Boolean statusUser) {
         this.idUser = idUser;
         this.nameUser = nameUser;
         this.paternalSurNameUser = paternalSurNameUser;
@@ -44,6 +52,7 @@ public class User {
         this.emailUser = emailUser;
         this.passwordUser = passwordUser;
         this.accountCreatedDateUser = accountCreatedDateUser;
+        this.statusUser = statusUser;
     }
 
     public int getIdUser() {
@@ -108,5 +117,21 @@ public class User {
 
     public void setAccountCreatedDateUser(LocalDate accountCreatedDateUser) {
         this.accountCreatedDateUser = accountCreatedDateUser;
+    }
+
+    public Boolean getStatusUser() {
+        return statusUser;
+    }
+
+    public void setStatusUser(Boolean statusUser) {
+        this.statusUser = statusUser;
+    }
+
+    public List<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Roles> roles) {
+        this.roles = roles;
     }
 }

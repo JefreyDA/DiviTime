@@ -3,7 +3,6 @@ package pe.edu.upc.divitime.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import pe.edu.upc.divitime.dtos.ChatUserQuantityDTO;
 import pe.edu.upc.divitime.entities.Chat;
 
 import java.util.List;
