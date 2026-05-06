@@ -20,6 +20,8 @@ public class RoleController {
     @Autowired
     private IRoleService rS;
 
+    //Validar la existencia de solo cuatro roles: Padre / Madre / Tutor Legal / Hijo
+
     @GetMapping("/list-roles")
     public ResponseEntity<List<RoleDTO>> listaRoles() {
         ModelMapper m = new ModelMapper();
