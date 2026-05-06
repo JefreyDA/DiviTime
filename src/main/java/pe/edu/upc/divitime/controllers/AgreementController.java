@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.QueryAgreementByFamilyDTO;
 import pe.edu.upc.divitime.dtos.AgreementDTO;
@@ -27,6 +28,7 @@ public class AgreementController {
     private IFamilyService fS;
 
     @GetMapping("/listAgreements")
+    @PreAuthorize("hasAuthority('PADRE')")
     public ResponseEntity<List<AgreementDTO>> list() {
         ModelMapper m = new ModelMapper();
 
