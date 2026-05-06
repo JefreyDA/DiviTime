@@ -183,4 +183,40 @@ public class ExpenseController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/compare-expenses")
+    public List<String> compareExpensesByFamilyAndPeriod(
+            @RequestParam int familyId,
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate) {
+
+        List<Object[]> results = eS.compareExpensesByFamilyAndPeriod(
+                familyId, startDate, endDate);
+
+        List<String> response = new ArrayList<>();
+
+        if (results.size() >= 2) {
+            String user1 = (String) results.get(0)[0];
+            double amount1 = ((Number) results.get(0)[1]).doubleValue();
+
+            String user2 = (String) results.get(1)[0];
+            double amount2 = ((Number) results.get(1)[1]).doubleValue();
+
+            double difference = Math.abs(amount1 - amount2);
+
+            response.add(user1 + ": S/ " + amount1);
+            response.add(user2 + ": S/ " + amount2);
+            response.add("Diferencia: S/ " + difference);
+        } else if (results.size() == 1) {
+            String user = (String) results.get(0)[0];
+            double amount = ((Number) results.get(0)[1]).doubleValue();
+
+            response.add(user + ": S/ " + amount);
+            response.add("Diferencia: S/ 0.0");
+        } else {
+            response.add("No hay gastos registrados en el período indicado.");
+        }
+
+        return response;
+    }
 }

@@ -3,6 +3,7 @@ package pe.edu.upc.divitime.servicesinterfaces;
 import org.springframework.data.repository.query.Param;
 import pe.edu.upc.divitime.entities.Expense;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +20,6 @@ public interface IExpenseService {
     List<Object[]> expensesPercentageByType();
     List<Object[]> expensesAmountByType();
     List<Object[]> amountExpensedByUserOnAYearMonthAndFamiliy(int year, int familyId);
+    List<Object[]> compareExpensesByFamilyAndPeriod(int familyId, LocalDate startDate, LocalDate endDate);
 
 }

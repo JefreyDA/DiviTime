@@ -6,6 +6,7 @@ import pe.edu.upc.divitime.entities.Expense;
 import pe.edu.upc.divitime.repositories.IExpenseRepository;
 import pe.edu.upc.divitime.servicesinterfaces.IExpenseService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,5 +64,9 @@ public class ExpenseServiceImplements implements IExpenseService {
     @Override
     public List<Object[]> amountExpensedByUserOnAYearMonthAndFamiliy(int year, int familyId) {
         return iExpRep.amountExpensedByUserOnAYearMonthAndFamiliy(year, familyId);
+    }
+    @Override
+    public List<Object[]> compareExpensesByFamilyAndPeriod(int familyId, LocalDate startDate, LocalDate endDate) {
+        return iExpRep.compareExpensesByFamilyAndPeriod(familyId,startDate,endDate);
     }
 }

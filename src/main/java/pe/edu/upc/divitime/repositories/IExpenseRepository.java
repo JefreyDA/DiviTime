@@ -2,9 +2,11 @@ package pe.edu.upc.divitime.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pe.edu.upc.divitime.entities.Expense;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -50,4 +52,20 @@ public interface IExpenseRepository extends JpaRepository<Expense, Integer> {
             " GROUP BY u.name_user, Mes\n" +
             " ORDER BY Mes;", nativeQuery = true)
     List<Object[]> amountExpensedByUserOnAYearMonthAndFamiliy(int year, int familyId);
+
+    @Query(value = "SELECT " +
+            " u.name_user AS usuario, " +
+            " SUM(e.amount_expense) AS totalGastado " +
+            " FROM expense e " +
+            " INNER JOIN tb_user u ON e.id_user = u.id_user " +
+            " WHERE e.status_expense = true " +
+            " AND e.id_family = :familyId " +
+            " AND e.date_expense BETWEEN :startDate AND :endDate " +
+            " GROUP BY u.id_user, u.name_user " +
+            " ORDER BY totalGastado DESC",
+            nativeQuery = true)
+    List<Object[]> compareExpensesByFamilyAndPeriod(
+            @Param("familyId") int familyId,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate);
 }
