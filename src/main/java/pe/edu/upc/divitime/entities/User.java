@@ -27,7 +27,7 @@ public class User {
     @Column(name = "emailUser", length = 100, nullable = false)
     private String emailUser;
 
-    @Column(name = "passwordUser", length = 50, nullable = false)
+    @Column(name = "passwordUser", length = 150, nullable = false)
     private String passwordUser;
 
     @Column(name = "accountCreatedDateUser", nullable = false)
