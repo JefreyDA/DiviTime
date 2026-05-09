@@ -2,7 +2,7 @@ package pe.edu.upc.divitime.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "agreement")
@@ -18,7 +18,7 @@ public class Agreement {
     private String descriptionAgreement;
 
     @Column(name = "creation_date", nullable = false)
-    private LocalDateTime creationDate;
+    private LocalDate creationDate;
 
     @ManyToOne
     @JoinColumn(name = "id_family", nullable = false)
@@ -31,7 +31,7 @@ public class Agreement {
     public Agreement() {
     }
 
-    public Agreement(int idAgreement, String titleAgreement, String descriptionAgreement, LocalDateTime creationDate, Family family, AgreementType agreementType) {
+    public Agreement(int idAgreement, String titleAgreement, String descriptionAgreement, LocalDate creationDate, Family family, AgreementType agreementType) {
         this.idAgreement = idAgreement;
         this.titleAgreement = titleAgreement;
         this.descriptionAgreement = descriptionAgreement;
@@ -64,11 +64,11 @@ public class Agreement {
         this.descriptionAgreement = descriptionAgreement;
     }
 
-    public LocalDateTime getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 

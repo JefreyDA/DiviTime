@@ -1,11 +1,12 @@
 package pe.edu.upc.divitime.dtos;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class QueryAgreementByFamilyDTO {
     private String titleAgreement;
     private String descriptionAgreement;
-    private LocalDateTime creationDate;
+    private LocalDate creationDate;
     private String nameFamily;
     private String nameAgreement;
 
@@ -25,11 +26,11 @@ public class QueryAgreementByFamilyDTO {
         this.descriptionAgreement = descriptionAgreement;
     }
 
-    public LocalDateTime getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -41,7 +42,11 @@ public class QueryAgreementByFamilyDTO {
         this.nameFamily = nameFamily;
     }
 
-    public String getNameAgreement() {return nameAgreement;}
+    public String getNameAgreement() {
+        return nameAgreement;
+    }
 
-    public void setNameAgreement(String nameAgreement) {this.nameAgreement = nameAgreement;}
+    public void setNameAgreement(String nameAgreement) {
+        this.nameAgreement = nameAgreement;
+    }
 }
