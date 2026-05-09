@@ -13,6 +13,7 @@ import pe.edu.upc.divitime.entities.Agreement;
 import pe.edu.upc.divitime.entities.AgreementType;
 import pe.edu.upc.divitime.entities.Family;
 import pe.edu.upc.divitime.servicesinterfaces.IAgreementService;
+import pe.edu.upc.divitime.servicesinterfaces.IAgreementTypeService;
 import pe.edu.upc.divitime.servicesinterfaces.IFamilyService;
 
 import java.util.List;
@@ -24,8 +25,12 @@ import java.util.stream.Collectors;
 public class AgreementController {
     @Autowired
     private IAgreementService aS;
+
     @Autowired
     private IFamilyService fS;
+
+    @Autowired
+    private IAgreementTypeService atS;
 
     @GetMapping("/listAgreements")
     @PreAuthorize("hasAuthority('PADRE')")
@@ -42,18 +47,30 @@ public class AgreementController {
     @PostMapping("/insert-agreement")
     public ResponseEntity<?> insert(@RequestBody AgreementGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
-        Agreement a = m.map(dto, Agreement.class);
+
+        if (dto.getTitleAgreement() == null || dto.getDescriptionAgreement() == null
+                || dto.getCreationDate() == null || dto.getIdFamily() == 0 || dto.getIdAgreementType() == 0) {
+            return ResponseEntity.badRequest()
+                    .body("Campos obligatorios vacíos");
+        }
 
         Optional<Family> fam = fS.listId(dto.getIdFamily());
-        if(fam.isEmpty()){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Familia no encontrada o no existe\n Solicitud de registro rechazado");}
 
-        Family f = new Family();
-        f.setIdFamily(dto.getIdFamily());
-        a.setFamily(f);
+        if (fam.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Familia no encontrada o no existe\nSolicitud de registro rechazada");
+        }
 
-        AgreementType aT = new AgreementType();
-        aT.setIdAgreementType(dto.getIdAgreementType());
-        a.setAgreementType(aT);
+        Optional<AgreementType> type = atS.listId(dto.getIdAgreementType());
+
+        if (type.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Tipo de acuerdo no encontrado o no existe\nSolicitud de registro rechazada");
+        }
+
+        Agreement a = m.map(dto, Agreement.class);
+        a.setFamily(fam.get());
+        a.setAgreementType(type.get());
 
         Agreement agreement = aS.insert(a);
 
@@ -91,9 +108,24 @@ public class AgreementController {
                     .body("Acuerdo no encontrado");
         }
 
-        if (dto.getTitleAgreement() == null || dto.getDescriptionAgreement() == null) {
+        if (dto.getTitleAgreement() == null || dto.getDescriptionAgreement() == null
+                || dto.getCreationDate() == null || dto.getIdFamily() == 0 || dto.getIdAgreementType() == 0) {
             return ResponseEntity.badRequest()
                     .body("Campos obligatorios vacíos");
+        }
+
+        Optional<Family> fam = fS.listId(dto.getIdFamily());
+
+        if (fam.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Familia no encontrada o no existe\nSolicitud de actualización rechazada");
+        }
+
+        Optional<AgreementType> type = atS.listId(dto.getIdAgreementType());
+
+        if (type.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Tipo de acuerdo no encontrado o no existe\nSolicitud de actualización rechazada");
         }
 
         Agreement a = existe.get();
@@ -101,14 +133,8 @@ public class AgreementController {
         a.setTitleAgreement(dto.getTitleAgreement());
         a.setDescriptionAgreement(dto.getDescriptionAgreement());
         a.setCreationDate(dto.getCreationDate());
-
-        Family f = new Family();
-        f.setIdFamily(dto.getIdFamily());
-        a.setFamily(f);
-
-        AgreementType aT = new AgreementType();
-        aT.setIdAgreementType(dto.getIdAgreementType());
-        a.setAgreementType(aT);
+        a.setFamily(fam.get());
+        a.setAgreementType(type.get());
 
         aS.update(a);
 
@@ -127,7 +153,8 @@ public class AgreementController {
                     .body("Acuerdo no encontrado");
         }
     }
-    @GetMapping("/agreement-bt-damily/{idFamily}")
+
+    @GetMapping("/agreement-by-family/{idFamily}")
     public ResponseEntity<?> getAgreementFamily(@PathVariable int idFamily) {
         List<QueryAgreementByFamilyDTO> listaBusqueda = aS.listAgreementsByFamilyJPQL(idFamily).stream()
                 .map(y -> {
