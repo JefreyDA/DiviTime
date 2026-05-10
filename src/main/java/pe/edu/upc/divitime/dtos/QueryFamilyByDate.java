@@ -1,10 +1,10 @@
 package pe.edu.upc.divitime.dtos;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class QueryFamilyByDate {
     private String nameFamily;
-    private LocalDateTime creationDate;
+    private LocalDate creationDate;
     private String linkInvitationFamily;
 
     public String getNameFamily() {
@@ -15,11 +15,11 @@ public class QueryFamilyByDate {
         this.nameFamily = nameFamily;
     }
 
-    public LocalDateTime getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
