@@ -37,4 +37,14 @@ public class RoleServiceImplement implements IRoleService {
     public void delete(int id) {
         rR.deleteById(id);
     }
+
+    @Override
+    public boolean existsByNameRole(String nameRole) {
+        return rR.existsByNameRole(nameRole);
+    }
+
+    @Override
+    public boolean existsByNameRoleAndIdRoleNot(String nameRole, int idRole) {
+        return rR.existsByNameRoleAndIdRoleNot(nameRole,idRole);
+    }
 }

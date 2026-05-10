@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.AgreementTypeDTO;
 import pe.edu.upc.divitime.dtos.AgreementTypeGeneralDTO;
@@ -21,6 +22,7 @@ public class AgreementTypeController {
     private IAgreementTypeService aTS;
 
     @GetMapping("/list-agreementType")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<AgreementTypeDTO>> list() {
         ModelMapper m = new ModelMapper();
         List<AgreementTypeDTO> listAgreementType = aTS.list().stream()
@@ -32,7 +34,22 @@ public class AgreementTypeController {
     }
 
     @PostMapping("/register-agreementType")
-    public ResponseEntity<AgreementTypeGeneralDTO> insert(@RequestBody AgreementTypeGeneralDTO dto) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> insert(@RequestBody AgreementTypeGeneralDTO dto) {
+        if (dto.getNameAgreementType() == null ||
+                dto.getNameAgreementType().trim().isEmpty()) {
+
+            return ResponseEntity.badRequest()
+                    .body("El nombre del tipo de acuerdo es obligatorio");
+        }
+        boolean exists =
+                aTS.existsByNameAgreementType(
+                        dto.getNameAgreementType());
+
+        if (exists) {
+            return ResponseEntity.badRequest()
+                    .body("Ya existe un tipo de acuerdo con ese nombre");
+        }
         ModelMapper m = new ModelMapper();
         AgreementType aT = m.map(dto, AgreementType.class);
         AgreementType agreementType = aTS.insert(aT);
@@ -41,6 +58,7 @@ public class AgreementTypeController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listId(@PathVariable int id) {
         ModelMapper m = new ModelMapper();
         Optional<AgreementType> agreementType = aTS.listId(id);
@@ -54,6 +72,7 @@ public class AgreementTypeController {
     }
 
     @PutMapping("/update-agreementType")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> update(@RequestBody AgreementTypeGeneralDTO dto) {
         Optional<AgreementType> exists = aTS.listId((dto.getIdAgreementType()));
         if (exists.isEmpty()) {
@@ -63,6 +82,15 @@ public class AgreementTypeController {
         if (dto.getNameAgreementType() == null) {
             return ResponseEntity.badRequest()
                     .body(("Ingresar el tipo de acuerdo"));
+        }
+        boolean duplicated =
+                aTS.existsByNameAgreementTypeAndIdAgreementTypeNot(
+                        dto.getNameAgreementType(),
+                        dto.getIdAgreementType());
+
+        if (duplicated) {
+            return ResponseEntity.badRequest()
+                    .body("Ya existe un tipo de acuerdo con ese nombre");
         }
 
         AgreementType aT = exists.get();
@@ -74,6 +102,7 @@ public class AgreementTypeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable int id) {
         Optional<AgreementType> aT = aTS.listId(id);
         if (aT.isPresent()) {

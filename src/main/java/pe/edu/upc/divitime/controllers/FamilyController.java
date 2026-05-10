@@ -12,6 +12,7 @@ import pe.edu.upc.divitime.dtos.QueryFamilyByDate;
 import pe.edu.upc.divitime.entities.Family;
 import pe.edu.upc.divitime.entities.User;
 import pe.edu.upc.divitime.servicesinterfaces.IFamilyService;
+import pe.edu.upc.divitime.servicesinterfaces.IUserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,8 +26,11 @@ import java.util.stream.Collectors;
     @Autowired
     private IFamilyService fS;
 
+    @Autowired
+    private IUserService uS;
+
     @GetMapping("/listFamilies")
-    @PreAuthorize("hasAuthority('MADRE')")
+    @PreAuthorize("hasAuthority('PADRE DE FAMILIA')")
     public ResponseEntity<List<FamilyDTO>> list() {
         ModelMapper m = new ModelMapper();
 
@@ -38,14 +42,23 @@ import java.util.stream.Collectors;
     }
 
     @PostMapping("/insert-family")
-    public ResponseEntity<FamilyGeneralDTO> insrt(@RequestBody FamilyGeneralDTO dto) {
+    public ResponseEntity<?> insrt(@RequestBody FamilyGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
 
-        Family f = m.map(dto, Family.class);
+        if (dto.getNameFamily() == null || dto.getCreationDate() == null || dto.getIdCreatorFamily() == 0) {
+            return ResponseEntity.badRequest()
+                    .body("Campos obligatorios vacíos");
+        }
 
-        User u = new User();
-        u.setIdUser(dto.getIdCreatorFamily());
-        f.setCreatorFamily(u);
+        Optional<User> user = uS.listId(dto.getIdCreatorFamily());
+
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario creador no encontrado o no existe\nSolicitud de registro rechazada");
+        }
+
+        Family f = m.map(dto, Family.class);
+        f.setCreatorFamily(user.get());
 
         Family family = fS.insert(f);
 
@@ -85,15 +98,19 @@ import java.util.stream.Collectors;
                     .body("No pueden tener valores nulos");
         }
 
+        Optional<User> user = uS.listId(dto.getIdCreatorFamily());
+
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario creador no encontrado o no existe\nSolicitud de actualización rechazada");
+        }
+
         Family f = existe.get();
 
         f.setNameFamily(dto.getNameFamily());
         f.setCreationDate(dto.getCreationDate());
         f.setLinkInvitationFamily(dto.getLinkInvitationFamily());
-
-        User u = new User();
-        u.setIdUser(dto.getIdCreatorFamily());
-        f.setCreatorFamily(u);
+        f.setCreatorFamily(user.get());
 
         fS.update(f);
 
@@ -112,6 +129,7 @@ import java.util.stream.Collectors;
                     .body("Familia no encontrada");
         }
     }
+
     @GetMapping("/familias-by-dates")
     public ResponseEntity<?> getFamiliesByDate(
             @RequestParam LocalDateTime fechaInicio,

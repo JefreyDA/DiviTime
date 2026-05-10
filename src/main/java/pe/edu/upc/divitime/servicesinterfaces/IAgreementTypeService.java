@@ -11,5 +11,11 @@ public interface IAgreementTypeService {
     public Optional<AgreementType>listId(int id);
     public void update(AgreementType aT);
     public void delete(int id);
+    boolean existsByNameAgreementType(
+            String nameAgreementType);
+
+    boolean existsByNameAgreementTypeAndIdAgreementTypeNot(
+            String nameAgreementType,
+            int idAgreementType);
 
 }
