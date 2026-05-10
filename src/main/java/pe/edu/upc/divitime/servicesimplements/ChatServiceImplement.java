@@ -6,6 +6,7 @@ import pe.edu.upc.divitime.entities.Chat;
 import pe.edu.upc.divitime.repositories.IChatRepository;
 import pe.edu.upc.divitime.servicesinterfaces.IChatService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,16 +36,11 @@ public class ChatServiceImplement implements IChatService {
         return cR.save(c);
     }
 
-    @Override
-    public List<Object[]> obtenerFrecuenciaUsuarios() {
-        return cR.obtenerFrecuenciaUsuarios();
-    }
 
     @Override
-    public List<Object[]> obtenerFrecuenciaMenor() {
-        return cR.obtenerFrecuenciaMenor();
+    public List<Object[]> findNewChats(LocalDate fecha) {
+        return cR.findNuevosChats(fecha);
     }
-
 
 }
 
