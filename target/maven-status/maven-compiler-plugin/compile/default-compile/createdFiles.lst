@@ -7,7 +7,6 @@ pe\edu\upc\divitime\repositories\IAgreementTypeRepository.class
 pe\edu\upc\divitime\repositories\IFamilyRepository.class
 pe\edu\upc\divitime\servicesimplements\UserFamilyServiceImplement.class
 pe\edu\upc\divitime\servicesinterfaces\IExpenseService.class
-pe\edu\upc\divitime\servicesimplements\UserRoleServiceImplement.class
 pe\edu\upc\divitime\servicesinterfaces\IAgreementTypeService.class
 pe\edu\upc\divitime\controllers\ExpenseController.class
 pe\edu\upc\divitime\controllers\JwtAuthenticationController.class
@@ -21,7 +20,6 @@ pe\edu\upc\divitime\controllers\AgreementTypeController.class
 pe\edu\upc\divitime\servicesimplements\AgreementTypeServiceImplement.class
 pe\edu\upc\divitime\securities\JwtTokenUtil.class
 pe\edu\upc\divitime\servicesimplements\ChatServiceImplement.class
-pe\edu\upc\divitime\entities\UserRole.class
 pe\edu\upc\divitime\dtos\ExpenseQueryQuantityExpensedByUserOnAYearMonthAndFamiliy.class
 pe\edu\upc\divitime\entities\Roles.class
 pe\edu\upc\divitime\dtos\UserFamilyGeneralDTO.class
@@ -35,7 +33,6 @@ pe\edu\upc\divitime\dtos\ChatUserQuantityDTO.class
 pe\edu\upc\divitime\controllers\ChatController.class
 pe\edu\upc\divitime\dtos\AgreementTypeGeneralDTO.class
 pe\edu\upc\divitime\dtos\EventDTO.class
-pe\edu\upc\divitime\servicesinterfaces\IUserRoleService.class
 pe\edu\upc\divitime\DiviTimeApplication.class
 pe\edu\upc\divitime\dtos\AgreementTypeDTO.class
 pe\edu\upc\divitime\dtos\ExpenseDTO.class
@@ -66,7 +63,6 @@ pe\edu\upc\divitime\servicesimplements\JwtUserDetailsService.class
 pe\edu\upc\divitime\servicesinterfaces\IUserFamilyService.class
 pe\edu\upc\divitime\dtos\ChatDTO.class
 pe\edu\upc\divitime\servicesimplements\FamilyServiceImplement.class
-pe\edu\upc\divitime\controllers\UserRoleController.class
 pe\edu\upc\divitime\dtos\FamilyDTO.class
 pe\edu\upc\divitime\servicesinterfaces\IEventService.class
 pe\edu\upc\divitime\controllers\AgreementController.class
@@ -83,8 +79,6 @@ pe\edu\upc\divitime\controllers\ExpenseTypeController.class
 pe\edu\upc\divitime\repositories\IAgreementRepository.class
 pe\edu\upc\divitime\dtos\ExpenseTypeGeneralDTO.class
 pe\edu\upc\divitime\entities\UserFamily.class
-pe\edu\upc\divitime\dtos\UserRoleGeneralDTO.class
-pe\edu\upc\divitime\repositories\IUserRoleRepository.class
 pe\edu\upc\divitime\dtos\ExpenseQueryQuantityByTypeDTO.class
 pe\edu\upc\divitime\dtos\ChatGeneralDTO.class
 pe\edu\upc\divitime\dtos\QueryFamilyByDate.class
