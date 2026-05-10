@@ -12,5 +12,10 @@ public interface IRoleService {
     public Optional<Roles> listId(int id);
     public void update(Roles r);
     public void delete(int id);
+    boolean existsByNameRole(String nameRole);
+
+    boolean existsByNameRoleAndIdRoleNot(
+            String nameRole,
+            int idRole);
 
 }

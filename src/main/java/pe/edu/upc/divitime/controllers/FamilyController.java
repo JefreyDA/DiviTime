@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
     private IUserService uS;
 
     @GetMapping("/listFamilies")
-    @PreAuthorize("hasAuthority('MADRE')")
+    @PreAuthorize("hasAuthority('PADRE DE FAMILIA')")
     public ResponseEntity<List<FamilyDTO>> list() {
         ModelMapper m = new ModelMapper();
 

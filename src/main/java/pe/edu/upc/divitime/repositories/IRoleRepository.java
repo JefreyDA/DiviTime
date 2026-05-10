@@ -6,4 +6,9 @@ import pe.edu.upc.divitime.entities.Roles;
 
 @Repository
 public interface IRoleRepository extends JpaRepository<Roles,Integer> {
+    boolean existsByNameRole(String nameRole);
+
+    boolean existsByNameRoleAndIdRoleNot(
+            String nameRole,
+            int idRole);
 }

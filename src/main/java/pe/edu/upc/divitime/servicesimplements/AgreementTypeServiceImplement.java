@@ -38,6 +38,16 @@ public class AgreementTypeServiceImplement implements IAgreementTypeService {
         aTR.deleteById(id);
 
     }
+
+    @Override
+    public boolean existsByNameAgreementType(String nameAgreementType) {
+        return aTR.existsByNameAgreementType(nameAgreementType);
+    }
+
+    @Override
+    public boolean existsByNameAgreementTypeAndIdAgreementTypeNot(String nameAgreementType, int idAgreementType) {
+        return aTR.existsByNameAgreementTypeAndIdAgreementTypeNot(nameAgreementType,idAgreementType);
+    }
 }
 
 
