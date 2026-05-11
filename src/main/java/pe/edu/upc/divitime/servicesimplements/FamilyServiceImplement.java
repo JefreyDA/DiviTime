@@ -6,7 +6,7 @@ import pe.edu.upc.divitime.entities.Family;
 import pe.edu.upc.divitime.repositories.IFamilyRepository;
 import pe.edu.upc.divitime.servicesinterfaces.IFamilyService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +41,14 @@ public class FamilyServiceImplement implements IFamilyService {
     }
 
     @Override
-    public List<Family> listarFamiliasPorRangoFechasJPQL(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
-        return fR.listarFamiliasPorRangoFechasJPQL(fechaInicio, fechaFin);
+    public List<Family> listarFamiliasPorRangoFechasJPQL(
+            LocalDate fechaInicio,
+            LocalDate fechaFin
+    ) {
+
+        return fR.listarFamiliasPorRangoFechasJPQL(
+                fechaInicio,
+                fechaFin
+        );
     }
 }

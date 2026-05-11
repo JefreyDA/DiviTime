@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.UserDTO;
 import pe.edu.upc.divitime.dtos.UserGeneralDTO;
@@ -28,6 +29,7 @@ public class UserController {
     private IExpenseService eS;
 
     @GetMapping("/list-users")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserDTO>> listaUsers() {
         ModelMapper m = new ModelMapper();
         List<UserDTO> listaUsers = uS.list().stream()
@@ -37,6 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/register-users")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<UserGeneralDTO> registerUsers(@RequestBody UserGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
         User c = m.map(dto, User.class);
@@ -47,6 +50,7 @@ public class UserController {
     }
 
     @PutMapping("/update-user")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> updateUser(@RequestBody UserGeneralDTO dto) {
         Optional<User> exists = uS.listId(dto.getIdUser());
         if (exists.isEmpty()) {
@@ -66,6 +70,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         Optional<User> user = uS.listId(id);
 
