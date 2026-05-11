@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.ExpenseTypeDTO;
 import pe.edu.upc.divitime.dtos.ExpenseTypeGeneralDTO;
@@ -24,6 +25,7 @@ public class ExpenseTypeController {
     private IExpenseTypeService etS;
 
     @PostMapping("/register-expense-type")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerExpenseType(@RequestBody ExpenseTypeGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
         ExpenseType c = m.map(dto, ExpenseType.class);
@@ -37,6 +39,7 @@ public class ExpenseTypeController {
     }
 
     @PutMapping("/update-expense-type")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updateExpenseType(@RequestBody ExpenseTypeGeneralDTO dto) {
         Optional<ExpenseType> exists = etS.listId(dto.getIdExpenseType());
         if (exists.isEmpty()) {
@@ -53,6 +56,7 @@ public class ExpenseTypeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteExpenseType(@PathVariable int id) {
 
         Optional<ExpenseType> exists = etS.listId(id);
@@ -66,6 +70,7 @@ public class ExpenseTypeController {
     }
 
     @GetMapping("/list-expense-types")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<ExpenseTypeDTO>> listExpenseTypes() {
         ModelMapper m = new ModelMapper();
         List<ExpenseTypeDTO> listExpenseTypes = etS.list().stream()

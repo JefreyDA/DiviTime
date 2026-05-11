@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.ChatGeneralDTO;
 import pe.edu.upc.divitime.dtos.ChatUserQuantityDTO;
@@ -26,6 +27,7 @@ public class ChatController {
     private IUserRepository uR;
 
     @PostMapping("/registar")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL','HIJO')")
     public ResponseEntity<ChatGeneralDTO> registrar(@RequestBody ChatGeneralDTO dto){
         ModelMapper m = new ModelMapper();
         Chat c = m.map(dto, Chat.class);
@@ -36,6 +38,7 @@ public class ChatController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> buscarPorId(@PathVariable int id){
         ModelMapper m = new ModelMapper();
         Optional<Chat> chat = chS.listId(id);
@@ -74,6 +77,7 @@ public class ChatController {
     }
 
     @GetMapping("/frecuencia-chat")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> obtenerFrecuenciaChat(){
         List<Object[]> listaFrecuencia = chS.obtenerFrecuenciaUsuarios();
         if (listaFrecuencia.isEmpty()) {
@@ -94,6 +98,7 @@ public class ChatController {
     }
 
     @GetMapping("/frecuencia-menor-chat")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> obtenerFrecuenciaMenor(){
         List<Object[]> listaFrecuenciaMenor = chS.obtenerFrecuenciaMenor();
         if (listaFrecuenciaMenor.isEmpty()) {
