@@ -1,9 +1,9 @@
 package pe.edu.upc.divitime.dtos;
 
-public class ChatUserQuantityDTO {
+public class ChatInteractionCountWeeklyDTO {
     private int idChat;
     private String nameUser;
-    private int frequencyChat;
+    private int totalInteractions;
 
     public int getIdChat() {
         return idChat;
@@ -21,11 +21,11 @@ public class ChatUserQuantityDTO {
         this.nameUser = nameUser;
     }
 
-    public int getFrequencyChat() {
-        return frequencyChat;
+    public int getTotalInteractions() {
+        return totalInteractions;
     }
 
-    public void setFrequencyChat(int frequencyChat) {
-        this.frequencyChat = frequencyChat;
+    public void setTotalInteractions(int totalInteractions) {
+        this.totalInteractions = totalInteractions;
     }
 }
