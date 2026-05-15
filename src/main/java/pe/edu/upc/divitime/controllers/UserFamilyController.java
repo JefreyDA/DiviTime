@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.UserFamilyDTO;
 import pe.edu.upc.divitime.dtos.UserFamilyGeneralDTO;
@@ -29,16 +30,22 @@ public class UserFamilyController {
     private IFamilyService fS;
 
     @GetMapping("/list-userFamily")
-    public ResponseEntity<List<UserFamilyDTO>> list() {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL', 'HIJO')")
+    public ResponseEntity<?> list() {
         ModelMapper m = new ModelMapper();
         List<UserFamilyDTO> listUserFamilyDTO = ufS.list().stream()
                 .map(y -> m.map(y, UserFamilyDTO.class))
                 .collect(Collectors.toList());
 
+        if (listUserFamilyDTO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No hay relaciones registradas");
+        }
         return ResponseEntity.ok(listUserFamilyDTO);
     }
 
     @PostMapping("/register-userFamily")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL', 'HIJO')")
     public ResponseEntity<?> insert(@RequestBody UserFamilyGeneralDTO dto) {
 
         Optional<User> user = uS.listId(dto.getUserId());
@@ -67,6 +74,7 @@ public class UserFamilyController {
     }
 
     @PutMapping("/update-userFamily")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL', 'HIJO')")
     public ResponseEntity<String> updateUserFamily(@RequestBody UserFamilyGeneralDTO dto) {
         Optional<UserFamily> userFamily = ufS.listId(dto.getIdUserFamily());
         if (userFamily.isEmpty()) {
@@ -98,6 +106,7 @@ public class UserFamilyController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL', 'HIJO')")
     public ResponseEntity<String> deleteUserFamily(@PathVariable int id) {
         Optional<UserFamily> userFamily = ufS.listId(id);
 
