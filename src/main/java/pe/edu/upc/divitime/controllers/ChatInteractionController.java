@@ -31,7 +31,7 @@ public class ChatInteractionController {
     private IChatService cS;
 
     @PostMapping("/register/{idChat}")
-    @PreAuthorize("hasAuthority('ADMIN', 'HIJO')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'HIJO')")
     public ResponseEntity<String> register(@PathVariable("idChat") int idChat){
 
 
@@ -52,7 +52,7 @@ public class ChatInteractionController {
     }
 
     @GetMapping("/weekly-count/{idUser}")
-    @PreAuthorize("hasAuthority('ADMIN', 'PADRE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE')")
     public ResponseEntity<?> getWeeklyCount(@PathVariable int idUser){
         LocalDate limitDate = LocalDate.now().minusDays(7);
 
