@@ -26,8 +26,6 @@ public class EventController {
     @Autowired
     private IEventService eS;
     @Autowired
-    private IFamilyService fS;
-    @Autowired
     private IUserService uS;
 
     @GetMapping("/list-events")
@@ -47,20 +45,14 @@ public class EventController {
     }
 
     @PostMapping("/register-events")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> insert(@RequestBody EventGeneralDTO dto) {
 
         Optional<User> user = uS.listId(dto.getIdUser());
-        Optional<Family> family = fS.listId(dto.getIdFamily());
 
         if(user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Usuario no encontrado");
-        }
-
-        if(family.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Familia no encontrado");
         }
 
         if (dto.getEndDateEvent().isBefore(dto.getStartDateEvent())) {
@@ -81,7 +73,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> findById(@PathVariable int id) {
         ModelMapper m = new ModelMapper();
         Optional<Event> event = eS.listEventById(id);
@@ -95,12 +87,11 @@ public class EventController {
     }
 
     @PutMapping("/update-event")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> update(@RequestBody EventGeneralDTO dto) {
 
         Optional<Event> event = eS.listEventById(dto.getIdEvent());
         Optional<User> user = uS.listId(dto.getIdUser());
-        Optional<Family> family = fS.listId(dto.getIdFamily());
 
         if (event.isEmpty()) {
             return ResponseEntity.status((HttpStatus.NOT_FOUND))
@@ -110,11 +101,6 @@ public class EventController {
         if(user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Usuario no encontrado");
-        }
-
-        if(family.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Familia no encontrada");
         }
 
         if (dto.getStartDateEvent() == null || dto.getEndDateEvent() == null || dto.getCreationDateEvent() == null) {
@@ -139,7 +125,6 @@ public class EventController {
         e.setDetailsEvent(dto.getDetailsEvent());
         e.setCreationDateEvent(dto.getCreationDateEvent());
         e.setLocationEvent(dto.getLocationEvent());
-        e.setFamily(family.get());
         e.setUser(user.get());
 
         eS.updateEvent(e);
@@ -147,7 +132,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> delete(@PathVariable int id) {
         Optional<Event> event = eS.listEventById(id);
         if (event.isPresent()) {
@@ -160,7 +145,7 @@ public class EventController {
     }
 
     @GetMapping("/list-events-by-family/{idFamily}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL', 'HIJO')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL', 'HIJO')")
     public ResponseEntity<?> listEventsByFamily(@PathVariable("idFamily") int idFamily){
 
         List<Event> events  = eS.listEventsByFamily(idFamily);
@@ -176,7 +161,7 @@ public class EventController {
     }
 
     @GetMapping("/list-events-by-user/{idUser}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> listEventsByUser(@PathVariable("idUser") int idUser){
 
         List<Event> events  = eS.listEventsByUser(idUser);

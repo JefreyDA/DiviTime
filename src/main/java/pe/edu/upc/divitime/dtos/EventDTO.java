@@ -9,7 +9,6 @@ public class EventDTO {
     private String detailsEvent;
     private LocalDate creationDateEvent;
     private String locationEvent;
-    private int idFamily;
     private int idUser;
 
     public String getTitleEvent() {
@@ -58,14 +57,6 @@ public class EventDTO {
 
     public void setLocationEvent(String locationEvent) {
         this.locationEvent = locationEvent;
-    }
-
-    public int getIdFamily() {
-        return idFamily;
-    }
-
-    public void setIdFamily(int idFamily) {
-        this.idFamily = idFamily;
     }
 
     public int getIdUser() {
