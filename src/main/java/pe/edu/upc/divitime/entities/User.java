@@ -3,7 +3,8 @@ package pe.edu.upc.divitime.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
+
+// ENTIDAD ALTERADA PARA LA NUEVA VERSIÓN
 
 @Entity
 @Table(name = "tb_user")
@@ -36,14 +37,18 @@ public class User {
     @Column(name = "statusUser", nullable = false)
     private Boolean statusUser;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<Roles> roles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idRole", nullable = false)
+    private Roles roles;
+
+    @ManyToOne
+    @JoinColumn(name = "idFamily", nullable = true)
+    private Family family;
 
     public User() {
     }
 
-    public User(int idUser, String nameUser, String paternalSurNameUser, String maternalSurNameUser, LocalDate birthDateUser, String emailUser, String passwordUser, LocalDate accountCreatedDateUser, Boolean statusUser) {
+    public User(int idUser, String nameUser, String paternalSurNameUser, String maternalSurNameUser, LocalDate birthDateUser, String emailUser, String passwordUser, LocalDate accountCreatedDateUser, Boolean statusUser, Roles roles, Family family) {
         this.idUser = idUser;
         this.nameUser = nameUser;
         this.paternalSurNameUser = paternalSurNameUser;
@@ -53,6 +58,8 @@ public class User {
         this.passwordUser = passwordUser;
         this.accountCreatedDateUser = accountCreatedDateUser;
         this.statusUser = statusUser;
+        this.roles = roles;
+        this.family = family;
     }
 
     public int getIdUser() {
@@ -115,9 +122,7 @@ public class User {
         return accountCreatedDateUser;
     }
 
-    public void setAccountCreatedDateUser(LocalDate accountCreatedDateUser) {
-        this.accountCreatedDateUser = accountCreatedDateUser;
-    }
+    public void setAccountCreatedDateUser(LocalDate accountCreatedDateUser) { this.accountCreatedDateUser = accountCreatedDateUser; }
 
     public Boolean getStatusUser() {
         return statusUser;
@@ -127,11 +132,11 @@ public class User {
         this.statusUser = statusUser;
     }
 
-    public List<Roles> getRoles() {
-        return roles;
-    }
+    public Roles getRoles() { return roles; }
 
-    public void setRoles(List<Roles> roles) {
-        this.roles = roles;
-    }
+    public void setRoles(Roles roles) { this.roles = roles; }
+
+    public Family getFamily() { return family; }
+
+    public void setFamily(Family family) { this.family = family; }
 }

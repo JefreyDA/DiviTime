@@ -57,18 +57,13 @@ public class ExpenseServiceImplements implements IExpenseService {
     }
 
     @Override
-    public List<Object[]> expensesPercentageByType() {
-        return iExpRep.expensesPercentageByType();
+    public List<Object[]> expensesAmountAndPercentageByType(int idUser) {
+        return iExpRep.expensesAmountAndPercentageByType(idUser);
     }
 
     @Override
-    public List<Object[]> expensesAmountByType() {
-        return iExpRep.expensesAmountByType();
-    }
-
-    @Override
-    public List<Object[]> amountExpensedByUserOnAYearMonthAndFamiliy(int year, int familyId) {
-        return iExpRep.amountExpensedByUserOnAYearMonthAndFamiliy(year, familyId);
+    public List<Object[]> totalExpensesByFamilyMembersOnMonthAndYear(int idUser, int mes, int anio) {
+        return iExpRep.totalExpensesByFamilyMembersOnMonthAndYear(idUser, mes, anio);
     }
     @Override
     public List<Object[]> compareExpensesByFamilyAndPeriod(int familyId, LocalDate startDate, LocalDate endDate) {

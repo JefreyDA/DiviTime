@@ -2,9 +2,9 @@ package pe.edu.upc.divitime.dtos;
 
 import java.time.LocalDate;
 
-// CLASE ALTERADA PARA LA NUEVA VERSIÓN
+// CLASE AGREGADA PARA LA NUEVA VERSIÓN
 
-public class UserGeneralDTO {
+public class UserGeneralListDTO {
     private int idUser;
     private String nameUser;
     private String paternalSurNameUser;
@@ -13,6 +13,7 @@ public class UserGeneralDTO {
     private String emailUser;
     private String passwordUser;
     private int idRole;
+    private int idFamily;
 
     public int getIdUser() {
         return idUser;
@@ -73,4 +74,8 @@ public class UserGeneralDTO {
     public int getIdRole() { return idRole; }
 
     public void setIdRole(int idRole) { this.idRole = idRole; }
+
+    public int getIdFamily() { return idFamily; }
+
+    public void setIdFamily(int idFamily) { this.idFamily = idFamily; }
 }

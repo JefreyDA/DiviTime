@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
+// ENTIDAD ALTERADA PARA LA NUEVA VERSIÓN
+
 @Entity
 @Table(name = "expense")
 public class Expense {
@@ -34,11 +36,7 @@ public class Expense {
     @JoinColumn(name = "idUser", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "idFamily")
-    private Family family;
-
-    public Expense(int idExpense, double amountExpense, String descriptionExpense, String urlImageVoucherExpense, LocalDate dateExpense, Boolean statusExpense, ExpenseType expenseType, User user, Family family) {
+    public Expense(int idExpense, double amountExpense, String descriptionExpense, String urlImageVoucherExpense, LocalDate dateExpense, Boolean statusExpense, ExpenseType expenseType, User user) {
         this.idExpense = idExpense;
         this.amountExpense = amountExpense;
         this.descriptionExpense = descriptionExpense;
@@ -47,7 +45,6 @@ public class Expense {
         this.statusExpense = statusExpense;
         this.expenseType = expenseType;
         this.user = user;
-        this.family = family;
     }
 
     public Expense() {
@@ -115,13 +112,5 @@ public class Expense {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Family getFamily() {
-        return family;
-    }
-
-    public void setFamily(Family family) {
-        this.family = family;
     }
 }

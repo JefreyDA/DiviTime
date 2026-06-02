@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
+// ENTIDAD ALTERADA PARA LA NUEVA VERSIÓN
+
 @Entity
-@Table(name="roles", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "rol"})})
+@Table(name = "roles")
 public class Roles implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idRole;
-    @Column(name = "NameRole",length = 50,nullable = false)
-    private String nameRole;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "nameRole", length = 50, nullable = false)
+    private String nameRole;
 
     public Roles() {
     }
@@ -39,13 +39,5 @@ public class Roles implements Serializable {
 
     public void setNameRole(String nameRole) {
         this.nameRole = nameRole;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }
