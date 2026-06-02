@@ -8,9 +8,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upc.divitime.entities.User;
 
+import java.util.List;
+
+// REPOSITORIO ALTERADO PARA LA NUEVA VERSIÓN
+
 @Repository
 public interface IUserRepository extends JpaRepository<User, Integer> {
     public User findOneByEmailUser(String emailUser);
+
+    List<User> findByStatusUserTrue();
+    List<User> findByStatusUserFalse();
 
     @Query("select count(u.emailUser) from User u where u.emailUser = :emailUser")
     public int buscarEmailUser(@Param("emailUser") String emailUser);

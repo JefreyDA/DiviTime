@@ -12,7 +12,7 @@ public class ExpenseDTO {
     private LocalDate dateExpense;
     private Boolean statusExpense;
     private ExpenseType expenseType;
-    private User user;
+    private int idUser;
 
     public double getAmountExpense() {
         return amountExpense;
@@ -62,11 +62,11 @@ public class ExpenseDTO {
         this.expenseType = expenseType;
     }
 
-    public User getUser() {
-        return user;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }

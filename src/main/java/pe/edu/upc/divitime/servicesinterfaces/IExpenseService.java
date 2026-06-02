@@ -17,9 +17,8 @@ public interface IExpenseService {
     List<Expense> listActiveExpenses();
     List<Expense> listDeletedExpenses();
 
-    List<Object[]> expensesPercentageByType();
-    List<Object[]> expensesAmountByType();
-    List<Object[]> amountExpensedByUserOnAYearMonthAndFamiliy(int year, int familyId);
+    List<Object[]> expensesAmountAndPercentageByType(int idUser);
+    List<Object[]> totalExpensesByFamilyMembersOnMonthAndYear(int idUser, int mes, int anio);
     List<Object[]> compareExpensesByFamilyAndPeriod(int familyId, LocalDate startDate, LocalDate endDate);
 
 }
