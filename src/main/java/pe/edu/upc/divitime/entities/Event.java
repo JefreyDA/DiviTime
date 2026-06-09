@@ -31,14 +31,14 @@ public class Event {
     private String locationEvent;
 
     @ManyToOne
-    @JoinColumn(name = "idFamily")
-    private Family family;
-
-    @ManyToOne
     @JoinColumn(name = "idUser")
     private User user;
 
-    public Event(int idEvent, String titleEvent, LocalDate startDateEvent, LocalDate endDateEvent, String detailsEvent, LocalDate creationDateEvent, String locationEvent, Family family, User user) {
+    public Event() {
+
+    }
+
+    public Event(int idEvent, String titleEvent, LocalDate startDateEvent, LocalDate endDateEvent, String detailsEvent, LocalDate creationDateEvent, String locationEvent, User user) {
         this.idEvent = idEvent;
         this.titleEvent = titleEvent;
         this.startDateEvent = startDateEvent;
@@ -46,12 +46,7 @@ public class Event {
         this.detailsEvent = detailsEvent;
         this.creationDateEvent = creationDateEvent;
         this.locationEvent = locationEvent;
-        this.family = family;
         this.user = user;
-    }
-
-    public Event() {
-
     }
 
     public int getIdEvent() {
@@ -108,14 +103,6 @@ public class Event {
 
     public void setLocationEvent(String locationEvent) {
         this.locationEvent = locationEvent;
-    }
-
-    public Family getFamily() {
-        return family;
-    }
-
-    public void setFamily(Family family) {
-        this.family = family;
     }
 
     public User getUser() {
