@@ -16,4 +16,5 @@ public interface IUserService {
 
     List<User> findByStatusUserTrue();
     List<User> findByStatusUserFalse();
+    Optional<User> findByEmailUser(String emailUser);
 }

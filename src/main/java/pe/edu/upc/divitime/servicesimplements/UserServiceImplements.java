@@ -47,4 +47,9 @@ public class UserServiceImplements implements IUserService {
 
     @Override
     public List<User> findByStatusUserFalse() { return iUsRep.findByStatusUserFalse(); }
+
+    @Override
+    public Optional<User> findByEmailUser(String emailUser) {
+        return iUsRep.findByEmailUser(emailUser);
+    }
 }

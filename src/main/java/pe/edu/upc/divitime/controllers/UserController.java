@@ -45,6 +45,9 @@ public class UserController {
         ModelMapper m = new ModelMapper();
         User c = m.map(dto, User.class);
 
+        Optional<User> Tempuser = uS.findByEmailUser(dto.getEmailUser());
+        if (Tempuser.isPresent()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Correo ya asociado a otro usuario"); }
+
         Optional<Roles> role = rS.listId(dto.getIdRole());
         if (role.isEmpty()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrada o no existe\nSolicitud de registro rechazada");}
 
@@ -62,13 +65,13 @@ public class UserController {
     }
 
     @PutMapping("/update-user")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> updateUser(@RequestBody UserGeneralDTO dto) {
         Optional<User> exists = uS.listId(dto.getIdUser());
-        if (exists.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Usuario no encontrado");
-        }
+        if (exists.isEmpty()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado"); }
+
+        Optional<User> Tempuser = uS.findByEmailUser(dto.getEmailUser());
+        if (Tempuser.isPresent()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Correo ya asociado a otro usuario"); }
 
         User u = exists.get();
         u.setNameUser(dto.getNameUser());
@@ -82,7 +85,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         Optional<User> user = uS.listId(id);
 
@@ -102,8 +105,29 @@ public class UserController {
         return ResponseEntity.ok("Usuario y gastos eliminados correctamente");
     }
 
+    @DeleteMapping("/delete-by-email/{emailUser}")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    public ResponseEntity<String> deleteUserByEmail(@PathVariable String emailUser) {
+        Optional<User> user = uS.findByEmailUser(emailUser);
+
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario no encontrado por correo");
+        }
+
+        User u = user.get();
+
+        List<Expense> expensesFounden = eS.searchByUser_IdUser(u.getIdUser());
+        for(Expense e : expensesFounden) {eS.deleteLogical(e);}
+
+        u.setFamily(null);
+        u.setStatusUser(false);
+        uS.deleteLogical(u);
+        return ResponseEntity.ok("Usuario y gastos eliminados correctamente");
+    }
+
     @GetMapping("/list-all-users")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserDTO>> listAllUsers() {
         ModelMapper m = new ModelMapper();
         List<UserDTO> listUsers = uS.list().stream()
@@ -113,7 +137,7 @@ public class UserController {
     }
 
     @GetMapping("/list-active-users")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserDTO>> listActiveUsers() {
         ModelMapper m = new ModelMapper();
         List<UserDTO> listActUsers = uS.findByStatusUserTrue().stream()
@@ -123,7 +147,7 @@ public class UserController {
     }
 
     @GetMapping("/list-inactive-users")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserDTO>> listInactiveUsers() {
         ModelMapper m = new ModelMapper();
         List<UserDTO> listInactUsers = uS.findByStatusUserFalse().stream()
@@ -133,7 +157,7 @@ public class UserController {
     }
 
     @GetMapping("/list-user-by-id")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listUserById(@PathVariable int id){
         ModelMapper m = new ModelMapper();
 
@@ -142,7 +166,6 @@ public class UserController {
         if (user.isPresent()) {
 
             UserGeneralListDTO dto = m.map(user.get(), UserGeneralListDTO.class);
-
             dto.setIdRole(user.get().getRoles().getIdRole());
             dto.setIdFamily(user.get().getFamily().getIdFamily());
 
