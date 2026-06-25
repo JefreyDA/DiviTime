@@ -156,7 +156,7 @@ public class UserController {
         return ResponseEntity.ok(listInactUsers);
     }
 
-    @GetMapping("/list-user-by-id/{id}")
+    @GetMapping("/list-user-by-id")
     //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listUserById(@PathVariable int id){
         ModelMapper m = new ModelMapper();

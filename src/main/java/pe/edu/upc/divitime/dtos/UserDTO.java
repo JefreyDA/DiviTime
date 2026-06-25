@@ -8,6 +8,7 @@ public class UserDTO {
     private String maternalSurNameUser;
     private LocalDate birthDateUser;
     private String emailUser;
+    private Boolean statusUser;
 
     public String getNameUser() {
         return nameUser;
@@ -47,5 +48,13 @@ public class UserDTO {
 
     public void setEmailUser(String emailUser) {
         this.emailUser = emailUser;
+    }
+
+    public Boolean getStatusUser() {
+        return statusUser;
+    }
+
+    public void setStatusUser(Boolean statusUser) {
+        this.statusUser = statusUser;
     }
 }

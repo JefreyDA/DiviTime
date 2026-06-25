@@ -14,9 +14,9 @@ public interface IEventRespository extends JpaRepository<Event, Integer> {
     @Query("SELECT e FROM Event e WHERE e.user.idUser = ?1")
     List<Event> listEventsByUserId(@Param("idUser") int idUser);
 
-    @Query("SELECT e FROM Event e WHERE e.family.idFamily = ?1")
+    @Query("SELECT e FROM Event e WHERE e.user.family.idFamily = ?1")
     List<Event> listEventsByFamilyId(@Param("idFamily") int idFamily);
 
-    @Query(" SELECT e FROM Event e WHERE e.family.idFamily = :idFamily AND e.startDateEvent >= CURRENT_DATE ORDER BY e.startDateEvent ASC")
+    @Query(" SELECT e FROM Event e WHERE e.user.family.idFamily = :idFamily AND e.startDateEvent >= CURRENT_DATE ORDER BY e.startDateEvent ASC")
     List<Event> findUpcomingByFamily(@Param("idFamily") int idFamily);
 }

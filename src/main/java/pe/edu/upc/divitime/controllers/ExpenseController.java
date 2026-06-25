@@ -12,11 +12,9 @@ import pe.edu.upc.divitime.dtos.ExpenseQueryQuantityByTypeDTO;
 import pe.edu.upc.divitime.dtos.ExpenseQueryQuantityExpensedByUserOnAYearMonthAndFamiliy;
 import pe.edu.upc.divitime.entities.Expense;
 import pe.edu.upc.divitime.entities.ExpenseType;
-import pe.edu.upc.divitime.entities.Family;
 import pe.edu.upc.divitime.entities.User;
 import pe.edu.upc.divitime.servicesinterfaces.IExpenseService;
 import pe.edu.upc.divitime.servicesinterfaces.IExpenseTypeService;
-import pe.edu.upc.divitime.servicesinterfaces.IFamilyService;
 import pe.edu.upc.divitime.servicesinterfaces.IUserService;
 
 import java.math.BigDecimal;
@@ -39,30 +37,25 @@ public class ExpenseController {
     @Autowired
     private IExpenseTypeService etS;
 
-    @Autowired
-    private IFamilyService fS;
-
     @PostMapping("/register-expense")
     @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> registerExpense(@RequestBody ExpenseGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
         Expense c = m.map(dto, Expense.class);
 
-        c.setDateExpense(LocalDate.now());
-        c.setStatusExpense(true);
-
-        if(dto.getAmountExpense() < 0){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El monto del gasto no puede ser negativo");
-        }
+        if(dto.getAmountExpense() < 0){return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El monto del gasto no puede ser negativo");}
 
         Optional<User> user = uS.listId(dto.getIdUser());
         if(user.isEmpty()) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado o no existe\n Solicitud de registro rechazado");}
+        if(user.get().getFamily() == null || user.get().getFamily().getIdFamily() == 0){ return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no pertenece a ninguna familia\n Solicitud de registro rechazado");}
 
         Optional<ExpenseType> exTy = etS.listId(dto.getIdExpenseType());
         if(exTy.isEmpty()){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tipo de gasto no encontrado o no existe\n Solicitud de registro rechazado");}
 
-        Optional<Family> fam = fS.listId(dto.getIdFamily());
-        if(fam.isEmpty()){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Familia no encontrada o no existe\n Solicitud de registro rechazado");}
+        c.setDateExpense(LocalDate.now());
+        c.setStatusExpense(true);
+        c.setUser(user.get());
+        c.setExpenseType(exTy.get());
 
         Expense expense = eS.insert(c);
         ExpenseGeneralDTO responseDTO = m.map(expense, ExpenseGeneralDTO.class);
@@ -89,11 +82,7 @@ public class ExpenseController {
         Expense e = exists.get();
         e.setAmountExpense(dto.getAmountExpense());
         e.setDescriptionExpense(dto.getDescriptionExpense());
-        e.setUrlImageVoucherExpense(dto.getUrlImageVoucherExpense());
-
-        ExpenseType type = new ExpenseType();
-        type.setIdExpenseType(dto.getIdExpenseType());
-        e.setExpenseType(type);
+        e.setExpenseType(exTy.get());
 
         eS.update(e);
         return ResponseEntity.ok("Gasto actualizado");
@@ -147,10 +136,10 @@ public class ExpenseController {
         return ResponseEntity.ok(listActiveExpenses);
     }
 
-    @GetMapping("/list-expenses-percentage-by-type")
+    @GetMapping("/list-expenses-percentage-by-type/{idUser}")
     @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
-    public ResponseEntity<?> listExpensesPercentageByType(){
-        List<Object[]> listExpensesPercentageByType = eS.expensesPercentageByType();
+    public ResponseEntity<?> listExpensesPercentageByType(@PathVariable int idUser){
+        List<Object[]> listExpensesPercentageByType = eS.expensesAmountAndPercentageByType(idUser);
 
         if(listExpensesPercentageByType.isEmpty()){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay gastos registrados");}
 
@@ -158,25 +147,8 @@ public class ExpenseController {
         for(Object[] fila:listExpensesPercentageByType){
             ExpenseQueryQuantityByTypeDTO dto = new ExpenseQueryQuantityByTypeDTO();
             dto.setNameExpenseType((String) fila[0]);
-            dto.setQuantity((BigDecimal) fila[1]);
-            response.add(dto);
-        }
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/list-expenses-amount-by-type")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
-    public ResponseEntity<?> listExpensesAmountByType(){
-        List<Object[]> listExpensesAmountByType = eS.expensesAmountByType();
-
-        if(listExpensesAmountByType.isEmpty()){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay gastos registrados");}
-
-        List<ExpenseQueryQuantityByTypeDTO> response = new ArrayList<>();
-        for(Object[] fila:listExpensesAmountByType){
-            ExpenseQueryQuantityByTypeDTO dto = new ExpenseQueryQuantityByTypeDTO();
-            dto.setNameExpenseType((String) fila[0]);
-            dto.setQuantity((BigDecimal) fila[1]);
+            dto.setQuantity((Double) fila[1]);
+            dto.setPercentage((BigDecimal) fila[2]);
             response.add(dto);
         }
 
@@ -185,16 +157,16 @@ public class ExpenseController {
 
     @GetMapping("/list-expensed-by-user-on-year-month-family")
     @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
-    public ResponseEntity<?> listExpensedQuantityByUYMF(@RequestParam int year, @RequestParam int familyId){
-        List<Object[]> listExpensedQuantityByUYMF = eS.amountExpensedByUserOnAYearMonthAndFamiliy(year, familyId);
+    public ResponseEntity<?> listExpensedQuantityByUYMF(@RequestParam int idUser, @RequestParam int mes, @RequestParam int anio){
+        List<Object[]> listExpensesByFamMembMY = eS.totalExpensesByFamilyMembersOnMonthAndYear(idUser, mes, anio);
 
-        if(listExpensedQuantityByUYMF.isEmpty()){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay gastos registrados");}
+        if(listExpensesByFamMembMY.isEmpty()){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay gastos registrados");}
 
         List<ExpenseQueryQuantityExpensedByUserOnAYearMonthAndFamiliy> response = new ArrayList<>();
-        for(Object[] fila:listExpensedQuantityByUYMF){
+        for(Object[] fila:listExpensesByFamMembMY){
             ExpenseQueryQuantityExpensedByUserOnAYearMonthAndFamiliy dto = new ExpenseQueryQuantityExpensedByUserOnAYearMonthAndFamiliy();
-            dto.setNameUser((String) fila[0]);
-            dto.setMonth((BigDecimal) fila[1]);
+            dto.setIdUser((Integer) fila[0]);
+            dto.setNameUser((String) fila[1]);
             dto.setTotalExpensed((double) fila[2]);
             response.add(dto);
         }

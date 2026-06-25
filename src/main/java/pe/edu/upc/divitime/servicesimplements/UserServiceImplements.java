@@ -9,6 +9,8 @@ import pe.edu.upc.divitime.servicesinterfaces.IUserService;
 import java.util.List;
 import java.util.Optional;
 
+// SERVICIO ALTERADO PARA LA NUEVA VERSIÓN
+
 @Service
 public class UserServiceImplements implements IUserService {
 
@@ -38,5 +40,16 @@ public class UserServiceImplements implements IUserService {
     @Override
     public Optional<User> listId(int id) {
         return iUsRep.findById(id);
+    }
+
+    @Override
+    public List<User> findByStatusUserTrue() { return iUsRep.findByStatusUserTrue(); }
+
+    @Override
+    public List<User> findByStatusUserFalse() { return iUsRep.findByStatusUserFalse(); }
+
+    @Override
+    public Optional<User> findByEmailUser(String emailUser) {
+        return iUsRep.findByEmailUser(emailUser);
     }
 }

@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 
 public class ExpenseQueryQuantityByTypeDTO {
     private String nameExpenseType;
-    private BigDecimal quantity;
+    private Double quantity;
+    private BigDecimal percentage;
 
     public String getNameExpenseType() {
         return nameExpenseType;
@@ -14,11 +15,19 @@ public class ExpenseQueryQuantityByTypeDTO {
         this.nameExpenseType = nameExpenseType;
     }
 
-    public BigDecimal getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(BigDecimal percentage) {
+        this.percentage = percentage;
     }
 }

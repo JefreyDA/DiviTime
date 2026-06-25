@@ -13,6 +13,8 @@ import pe.edu.upc.divitime.repositories.IUserRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+// USER DETAILS ALTERADO PARA LA NUEVA VERSIÓN, SOPORTA 1 USUARIO 1 ROL (FALTAN PRUEBAS)
+
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
@@ -31,9 +33,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        user.getRoles().forEach(rol -> {
-            authorities.add(new SimpleGrantedAuthority(rol.getNameRole()));
-        });
+        authorities.add(
+                new SimpleGrantedAuthority(
+                        user.getRoles().getNameRole()
+                )
+        );
 
         UserDetails ud = new org.springframework.security.core.userdetails.User(
                 user.getEmailUser(),

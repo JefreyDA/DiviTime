@@ -3,9 +3,17 @@ package pe.edu.upc.divitime.dtos;
 import java.math.BigDecimal;
 
 public class ExpenseQueryQuantityExpensedByUserOnAYearMonthAndFamiliy {
+    private int idUser;
     private String nameUser;
-    private BigDecimal month;
     private double totalExpensed;
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
 
     public String getNameUser() {
         return nameUser;
@@ -15,19 +23,11 @@ public class ExpenseQueryQuantityExpensedByUserOnAYearMonthAndFamiliy {
         this.nameUser = nameUser;
     }
 
-    public BigDecimal getMonth() {
-        return month;
-    }
-
-    public void setMonth(BigDecimal month) {
-        this.month = month;
-    }
-
     public double getTotalExpensed() {
         return totalExpensed;
     }
 
-    public void setTotalExpensed(double  totalExpensed) {
+    public void setTotalExpensed(double totalExpensed) {
         this.totalExpensed = totalExpensed;
     }
 }
