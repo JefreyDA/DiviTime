@@ -1,8 +1,6 @@
 package pe.edu.upc.divitime.dtos;
 
 import java.time.LocalDate;
-
-
 public class FamilyDTO {
     private String nameFamily;
     private LocalDate creationDate;

@@ -17,6 +17,11 @@ public class ChatServiceImplement implements IChatService {
 
 
     @Override
+    public List<Chat> list() {
+        return cR.findAll();
+    }
+
+    @Override
     public Chat insert(Chat c) {
         return cR.save(c);
     }
