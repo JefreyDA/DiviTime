@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.divitime.dtos.ChatDTO;
 import pe.edu.upc.divitime.dtos.ChatGeneralDTO;
 import pe.edu.upc.divitime.dtos.ChatRecentUserDTO;
 import pe.edu.upc.divitime.entities.Chat;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -31,7 +34,7 @@ public class ChatController {
     private IUserRepository uR;
 
     @PostMapping("/register")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'HIJO')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'HIJO')")
     public ResponseEntity<?> registrar(@RequestBody ChatGeneralDTO dto){
         if(dto.getIdUser() == 0 || dto.getStartDateChat() == null){
             return ResponseEntity.badRequest()
@@ -57,8 +60,18 @@ public class ChatController {
                 .body(responseDTO);
     }
 
+    @GetMapping("/list-all-chats")
+    ////@PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<List<ChatDTO>> listAllChats(){
+        ModelMapper m = new ModelMapper();
+        List<ChatDTO> listChats = chS.list().stream()
+                .map(y->m.map(y, ChatDTO.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(listChats);
+    }
+
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> buscarPorId(@PathVariable int id){
         ModelMapper m = new ModelMapper();
         Optional<Chat> chat = chS.listId(id);
@@ -73,7 +86,7 @@ public class ChatController {
     }
 
     @PutMapping("/{idUser}/increase")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
     public ResponseEntity<?> incrementarFrecuenciaChat(@PathVariable int idUser){
         Optional<Chat> chatO = chS.findByUser_IdUser(idUser);
 
@@ -99,7 +112,7 @@ public class ChatController {
 
 
     @GetMapping("/recents-users")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> obtenerRecientes() {
         LocalDate fechaFiltro = LocalDate.now().minusMonths(1);
         List<Object[]> lista = chS.findNewChats(fechaFiltro);
