@@ -7,6 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IChatInteractionService {
-    public void registerEntry(ChatInteraction interaction);
-    List<Object[]> countWeeklyInteractions(@Param("idUser") int idUser, @Param("limitDate") LocalDate limitDate);
+    void registerEntry(ChatInteraction interaction);
+
+    List<ChatInteraction> listByChatId(int idChat);
+
+    List<Object[]> countWeeklyInteractions(@Param("idUser") int idUser,
+                                           @Param("limitDate") LocalDate limitDate);
 }

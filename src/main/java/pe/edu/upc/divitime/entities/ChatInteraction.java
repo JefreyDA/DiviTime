@@ -2,7 +2,8 @@ package pe.edu.upc.divitime.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "ChatInteraction")
@@ -11,8 +12,14 @@ public class ChatInteraction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idInteraction;
 
+    @Column(name = "messageText", nullable = false, columnDefinition = "TEXT")
+    private String messageText;
+
+    @Column(name = "senderRole", nullable = false, length = 20)
+    private String senderRole;
+
     @Column(name = "interactionDate", nullable = false)
-    private LocalDate interactionDate;
+    private LocalDateTime interactionDate;
 
     @ManyToOne
     @JoinColumn(name = "idChat")
@@ -21,8 +28,10 @@ public class ChatInteraction {
     public ChatInteraction() {
     }
 
-    public ChatInteraction(int idInteraction, LocalDate interactionDate, Chat chat) {
+    public ChatInteraction(int idInteraction, String messageText, String senderRole, LocalDateTime interactionDate, Chat chat) {
         this.idInteraction = idInteraction;
+        this.messageText = messageText;
+        this.senderRole = senderRole;
         this.interactionDate = interactionDate;
         this.chat = chat;
     }
@@ -35,11 +44,27 @@ public class ChatInteraction {
         this.idInteraction = idInteraction;
     }
 
-    public LocalDate getInteractionDate() {
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
+
+    public String getSenderRole() {
+        return senderRole;
+    }
+
+    public void setSenderRole(String senderRole) {
+        this.senderRole = senderRole;
+    }
+
+    public LocalDateTime getInteractionDate() {
         return interactionDate;
     }
 
-    public void setInteractionDate(LocalDate interactionDate) {
+    public void setInteractionDate(LocalDateTime interactionDate) {
         this.interactionDate = interactionDate;
     }
 

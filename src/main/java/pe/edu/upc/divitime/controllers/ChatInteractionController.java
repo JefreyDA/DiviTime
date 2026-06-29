@@ -14,6 +14,8 @@ import pe.edu.upc.divitime.servicesinterfaces.IChatService;
 import pe.edu.upc.divitime.servicesinterfaces.IUserService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +46,7 @@ public class ChatInteractionController {
 
         ChatInteraction interaction = new ChatInteraction();
         interaction.setChat(chat.get());
-        interaction.setInteractionDate(LocalDate.now());
+        interaction.setInteractionDate(LocalDateTime.now());
 
         ciS.registerEntry(interaction);
 

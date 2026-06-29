@@ -16,6 +16,7 @@ public class ChatServiceImplement implements IChatService {
     private IChatRepository cR;
 
 
+
     @Override
     public List<Chat> list() {
         return cR.findAll();
