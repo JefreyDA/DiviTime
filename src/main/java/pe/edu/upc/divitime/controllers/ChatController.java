@@ -120,7 +120,6 @@ public class ChatController {
 
 
     @GetMapping("/recents-users")
-    git statusgit stash pop
     public ResponseEntity<?> obtenerRecientes() {
         LocalDate fechaFiltro = LocalDate.now().minusMonths(1);
         List<Object[]> lista = chS.findNewChats(fechaFiltro);
