@@ -176,4 +176,14 @@ public class UserController {
                     .body("Usuario no encontrado");
         }
     }
+
+    @GetMapping("/list-users")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    public ResponseEntity<List<UserGeneralDTO>> listUsers() {
+        ModelMapper m = new ModelMapper();
+        List<UserGeneralDTO> listUsers = uS.list().stream()
+                .map(y -> m.map(y, UserGeneralDTO.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(listUsers);
+    }
 }

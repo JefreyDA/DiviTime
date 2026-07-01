@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.divitime.dtos.ExpenseDTO;
-import pe.edu.upc.divitime.dtos.ExpenseGeneralDTO;
-import pe.edu.upc.divitime.dtos.ExpenseQueryQuantityByTypeDTO;
-import pe.edu.upc.divitime.dtos.ExpenseQueryQuantityExpensedByUserOnAYearMonthAndFamiliy;
+import pe.edu.upc.divitime.dtos.*;
 import pe.edu.upc.divitime.entities.Expense;
 import pe.edu.upc.divitime.entities.ExpenseType;
 import pe.edu.upc.divitime.entities.User;
@@ -38,7 +35,7 @@ public class ExpenseController {
     private IExpenseTypeService etS;
 
     @PostMapping("/register-expense")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> registerExpense(@RequestBody ExpenseGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
         Expense c = m.map(dto, Expense.class);
@@ -63,7 +60,7 @@ public class ExpenseController {
     }
 
     @PutMapping("/update-expense")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> updateExpense(@RequestBody ExpenseGeneralDTO dto) {
 
         Optional<Expense> exists = eS.listId(dto.getIdExpense());
@@ -89,7 +86,7 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> deleteExpense(@PathVariable int id) {
 
         Optional<Expense> exists = eS.listId(id);
@@ -107,17 +104,31 @@ public class ExpenseController {
     }
 
     @GetMapping("/list-expenses")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
-    public ResponseEntity<List<ExpenseDTO>> listExpenses() {
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    public ResponseEntity<List<ExpenseGeneralDTO>> listExpenses() {
         ModelMapper m = new ModelMapper();
-        List<ExpenseDTO> listExpenses = eS.list().stream()
-                .map(y -> m.map(y, ExpenseDTO.class))
+        List<ExpenseGeneralDTO> listExpenses = eS.list().stream()
+                .map(y -> m.map(y, ExpenseGeneralDTO.class))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(listExpenses);
     }
 
+    @GetMapping("/{id}")
+    //@PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> listId(@PathVariable int id) {
+        ModelMapper m = new ModelMapper();
+        Optional<Expense> agreementType = eS.listId(id);
+        if (agreementType.isPresent()) {
+            ExpenseGeneralDTO dto = m.map(agreementType.get(), ExpenseGeneralDTO.class);
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Gasto no encontrado");
+        }
+    }
+
     @GetMapping("/list-deleted-expenses")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<ExpenseDTO>> listDeletedExpenses() {
         ModelMapper m = new ModelMapper();
         List<ExpenseDTO> listDeletedExpenses = eS.listDeletedExpenses().stream()
@@ -127,7 +138,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/list-active-expenses")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<ExpenseDTO>> listActiveExpenses() {
         ModelMapper m = new ModelMapper();
         List<ExpenseDTO> listActiveExpenses = eS.listActiveExpenses().stream()
@@ -137,7 +148,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/list-expenses-percentage-by-type/{idUser}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> listExpensesPercentageByType(@PathVariable int idUser){
         List<Object[]> listExpensesPercentageByType = eS.expensesAmountAndPercentageByType(idUser);
 
@@ -156,7 +167,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/list-expensed-by-user-on-year-month-family")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> listExpensedQuantityByUYMF(@RequestParam int idUser, @RequestParam int mes, @RequestParam int anio){
         List<Object[]> listExpensesByFamMembMY = eS.totalExpensesByFamilyMembersOnMonthAndYear(idUser, mes, anio);
 
@@ -175,7 +186,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/compare-expenses")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public List<String> compareExpensesByFamilyAndPeriod(
             @RequestParam int familyId,
             @RequestParam LocalDate startDate,
