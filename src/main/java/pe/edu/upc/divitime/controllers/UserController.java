@@ -46,10 +46,10 @@ public class UserController {
         User c = m.map(dto, User.class);
 
         Optional<User> Tempuser = uS.findByEmailUser(dto.getEmailUser());
-        if (Tempuser.isPresent()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Correo ya asociado a otro usuario"); }
+        if (Tempuser.isPresent()) { return ResponseEntity.status(HttpStatus.CONFLICT).body("Correo ya asociado a otro usuario"); }
 
         Optional<Roles> role = rS.listId(dto.getIdRole());
-        if (role.isEmpty()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrada o no existe\nSolicitud de registro rechazada");}
+        if (role.isEmpty()) { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Rol no encontrada o no existe\nSolicitud de registro rechazada");}
 
         c.setStatusUser(true);
         c.setAccountCreatedDateUser(LocalDate.now());
@@ -100,7 +100,12 @@ public class UserController {
         for(Expense e : expensesFounden) {eS.deleteLogical(e);}
 
         u.setFamily(null);
-        u.setStatusUser(false);
+
+        if(u.getStatusUser()==false){
+            u.setStatusUser(true);
+        }else{
+            u.setStatusUser(false);
+        }
         uS.deleteLogical(u);
         return ResponseEntity.ok("Usuario y gastos eliminados correctamente");
     }
@@ -128,30 +133,30 @@ public class UserController {
 
     @GetMapping("/list-all-users")
     //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
-    public ResponseEntity<List<UserDTO>> listAllUsers() {
+    public ResponseEntity<List<UserGeneralListDTO>> listAllUsers() {
         ModelMapper m = new ModelMapper();
-        List<UserDTO> listUsers = uS.list().stream()
-                .map(y -> m.map(y, UserDTO.class))
+        List<UserGeneralListDTO> listUsers = uS.list().stream()
+                .map(y -> m.map(y, UserGeneralListDTO.class))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(listUsers);
     }
 
     @GetMapping("/list-active-users")
     //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
-    public ResponseEntity<List<UserDTO>> listActiveUsers() {
+    public ResponseEntity<List<UserGeneralListDTO>> listActiveUsers() {
         ModelMapper m = new ModelMapper();
-        List<UserDTO> listActUsers = uS.findByStatusUserTrue().stream()
-                .map(y -> m.map(y, UserDTO.class))
+        List<UserGeneralListDTO> listActUsers = uS.findByStatusUserTrue().stream()
+                .map(y -> m.map(y, UserGeneralListDTO.class))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(listActUsers);
     }
 
     @GetMapping("/list-inactive-users")
     //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
-    public ResponseEntity<List<UserDTO>> listInactiveUsers() {
+    public ResponseEntity<List<UserGeneralListDTO>> listInactiveUsers() {
         ModelMapper m = new ModelMapper();
-        List<UserDTO> listInactUsers = uS.findByStatusUserFalse().stream()
-                .map(y -> m.map(y, UserDTO.class))
+        List<UserGeneralListDTO> listInactUsers = uS.findByStatusUserFalse().stream()
+                .map(y -> m.map(y, UserGeneralListDTO.class))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(listInactUsers);
     }
