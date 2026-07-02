@@ -14,6 +14,8 @@ import pe.edu.upc.divitime.servicesinterfaces.IChatService;
 import pe.edu.upc.divitime.servicesinterfaces.IUserService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,7 @@ public class ChatInteractionController {
     private IChatService cS;
 
     @PostMapping("/register/{idChat}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'HIJO')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'HIJO')")
     public ResponseEntity<String> register(@PathVariable("idChat") int idChat){
 
 
@@ -44,7 +46,7 @@ public class ChatInteractionController {
 
         ChatInteraction interaction = new ChatInteraction();
         interaction.setChat(chat.get());
-        interaction.setInteractionDate(LocalDate.now());
+        interaction.setInteractionDate(LocalDateTime.now());
 
         ciS.registerEntry(interaction);
 
@@ -52,7 +54,7 @@ public class ChatInteractionController {
     }
 
     @GetMapping("/weekly-count/{idUser}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE')")
     public ResponseEntity<?> getWeeklyCount(@PathVariable int idUser){
         LocalDate limitDate = LocalDate.now().minusDays(7);
 

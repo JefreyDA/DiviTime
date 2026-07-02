@@ -11,14 +11,16 @@ import java.util.List;
 
 @Repository
 public interface IChatInteractionRepository extends JpaRepository<ChatInteraction, Integer> {
-    @Query(value = "SELECT c.id_chat, u.name_user,\n" +
-            "\tcount(ci.id_interaction)\n" +
-            " FROM chat c\n" +
-            " JOIN tb_user u ON c.id_user = u.id_user\n" +
-            " LEFT JOIN chat_interaction ci\n" +
-            " ON c.id_chat = ci.id_chat \n" +
-            " WHERE c.id_user = 1 \n" +
-            " \tAND ci.interaction_date >= :limitDate" +
-            " GROUP BY c.id_chat, u.name_user", nativeQuery = true)
-    List<Object[]> countWeeklyInteractions(@Param("idUser") int idUser, @Param("limitDate")LocalDate limitDate);
+    List<ChatInteraction> findByChat_IdChatOrderByInteractionDateAsc(int idChat);
+
+    @Query(value = "SELECT c.id_chat, u.name_user, COUNT(ci.id_interaction) " +
+            "FROM chat c " +
+            "JOIN tb_user u ON c.id_user = u.id_user " +
+            "LEFT JOIN chat_interaction ci ON c.id_chat = ci.id_chat " +
+            "WHERE c.id_user = :idUser " +
+            "AND ci.interaction_date >= :limitDate " +
+            "GROUP BY c.id_chat, u.name_user", nativeQuery = true)
+    List<Object[]> countWeeklyInteractions(@Param("idUser") int idUser,
+                                           @Param("limitDate") LocalDate limitDate);
+
 }

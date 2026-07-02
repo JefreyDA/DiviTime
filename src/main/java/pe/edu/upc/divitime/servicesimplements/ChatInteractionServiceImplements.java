@@ -21,6 +21,11 @@ public class ChatInteractionServiceImplements implements IChatInteractionService
     }
 
     @Override
+    public List<ChatInteraction> listByChatId(int idChat) {
+        return ciR.findByChat_IdChatOrderByInteractionDateAsc(idChat);
+    }
+
+    @Override
     public List<Object[]> countWeeklyInteractions(int idUser, LocalDate limitDate) {
         return ciR.countWeeklyInteractions(idUser, limitDate);
     }
