@@ -1,7 +1,15 @@
-package pe.edu.upc.divitime.dtos;
-
 public class AgreementTypeDTO {
+
+    private int idAgreementType;
     private String nameAgreementType;
+
+    public int getIdAgreementType() {
+        return idAgreementType;
+    }
+
+    public void setIdAgreementType(int idAgreementType) {
+        this.idAgreementType = idAgreementType;
+    }
 
     public String getNameAgreementType() {
         return nameAgreementType;
