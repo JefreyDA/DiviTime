@@ -177,6 +177,26 @@ public class UserController {
         }
     }
 
+    @GetMapping("/list-by-email/{emailUser}")
+    public ResponseEntity<?> getByEmail(@PathVariable String emailUser) {
+        Optional<User> user = uS.findByEmailUser(emailUser);
+
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario no encontrado");
+        }
+
+        ModelMapper m = new ModelMapper();
+        UserGeneralListDTO dto = m.map(user.get(), UserGeneralListDTO.class);
+        dto.setIdRole(user.get().getRoles().getIdRole());
+
+        if (user.get().getFamily() != null) {
+            dto.setIdFamily(user.get().getFamily().getIdFamily());
+        }
+
+        return ResponseEntity.ok(dto);
+    }
+
     @GetMapping("/list-users")
     //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserGeneralDTO>> listUsers() {

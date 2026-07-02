@@ -51,4 +51,9 @@ public class FamilyServiceImplement implements IFamilyService {
                 fechaFin
         );
     }
+
+    @Override
+    public Optional<Family> findByLink(String link) {
+        return fR.findByLinkInvitationFamily(link);
+    }
 }

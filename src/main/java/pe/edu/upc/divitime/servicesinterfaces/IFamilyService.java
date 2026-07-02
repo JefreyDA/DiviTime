@@ -21,4 +21,6 @@ public interface IFamilyService {
             LocalDate fechaInicio,
             LocalDate fechaFin
     );
+
+    Optional<Family> findByLink(String link);
 }
