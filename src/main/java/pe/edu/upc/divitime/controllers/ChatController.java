@@ -68,15 +68,15 @@ public class ChatController {
                 .body(responseDTO);
     }
 
-        @GetMapping("/list-all-chats")
-        ////@PreAuthorize("hasAnyAuthority('ADMIN')")
-        public ResponseEntity<List<ChatGeneralDTO>> listAllChats(){
-            ModelMapper m = new ModelMapper();
-            List<ChatGeneralDTO> listChats = chS.list().stream()
-                    .map(y->m.map(y, ChatGeneralDTO.class))
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(listChats);
-        }
+    @GetMapping("/list-all-chats")
+    //@PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<List<ChatGeneralDTO>> listAllChats(){
+        ModelMapper m = new ModelMapper();
+        List<ChatGeneralDTO> listChats = chS.list().stream()
+                .map(y->m.map(y, ChatGeneralDTO.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(listChats);
+    }
 
     @GetMapping("/{id}")
     //@PreAuthorize("hasAuthority('ADMIN')")

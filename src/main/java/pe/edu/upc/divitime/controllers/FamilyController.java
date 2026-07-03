@@ -67,6 +67,11 @@ import java.util.stream.Collectors;
         Family f = m.map(dto, Family.class);
         f.setCreatorFamily(user.get());
         Family family = fS.insert(f);
+
+        User u = user.get();
+        u.setFamily(family);
+        uS.update(u);
+
         FamilyGeneralDTO responseDTO =
                 m.map(family, FamilyGeneralDTO.class);
         responseDTO.setIdCreatorFamily(
@@ -192,6 +197,41 @@ import java.util.stream.Collectors;
         }
 
         return ResponseEntity.ok(listaBusqueda);
+    }
+
+    @PutMapping("/join/{idUser}")
+    public ResponseEntity<?> joinFamily(@PathVariable int idUser, @RequestBody String link) {
+
+        Optional<User> user = uS.listId(idUser);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
+
+        Optional<Family> family = fS.findByLink(link);
+        if (family.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Link de invitación inválido");
+        }
+
+        User u = user.get();
+        u.setFamily(family.get());
+        uS.update(u);
+
+        return ResponseEntity.ok("Usuario unido a la familia correctamente");
+    }
+
+    @PutMapping("/leave/{idUser}")
+    public ResponseEntity<?> leaveFamily(@PathVariable int idUser) {
+
+        Optional<User> user = uS.listId(idUser);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
+
+        User u = user.get();
+        u.setFamily(null);
+        uS.update(u);
+
+        return ResponseEntity.ok("Usuario salió de la familia correctamente");
     }
 }
 
