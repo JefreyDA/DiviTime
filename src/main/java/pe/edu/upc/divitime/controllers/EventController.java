@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.EventDTO;
 import pe.edu.upc.divitime.dtos.EventFamilyDTO;
 import pe.edu.upc.divitime.dtos.EventGeneralDTO;
+import pe.edu.upc.divitime.dtos.UserEventDTO;
 import pe.edu.upc.divitime.entities.Event;
 import pe.edu.upc.divitime.entities.Family;
 import pe.edu.upc.divitime.entities.User;
@@ -16,6 +17,8 @@ import pe.edu.upc.divitime.servicesinterfaces.IEventService;
 import pe.edu.upc.divitime.servicesinterfaces.IFamilyService;
 import pe.edu.upc.divitime.servicesinterfaces.IUserService;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -193,6 +196,33 @@ public class EventController {
                 .toList();
 
         return ResponseEntity.ok(result);
+    }
+
+
+    @GetMapping("/comparacion-eventos")
+    public List<UserEventDTO> compararEventos(
+            @RequestParam int idFamily,
+            @RequestParam LocalDate fechaInicio,
+            @RequestParam LocalDate fechaFin) {
+
+        List<Object[]> lista = eS.compararEventos(
+                idFamily,
+                fechaInicio,
+                fechaFin);
+
+        List<UserEventDTO> respuesta = new ArrayList<>();
+
+        for (Object[] fila : lista) {
+
+            UserEventDTO dto = new UserEventDTO();
+
+            dto.setUsuario((String) fila[0]);
+            dto.setTotalEventos(((Number) fila[1]).intValue());
+
+            respuesta.add(dto);
+        }
+
+        return respuesta;
     }
 
 }

@@ -34,12 +34,12 @@ public class AgreementController {
 
     @GetMapping("/listAgreements")
     //@PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<AgreementDTO>> list() {
+    public ResponseEntity<List<AgreementGeneralDTO>> list() {
 
         ModelMapper m = new ModelMapper();
 
-        List<AgreementDTO> list = aS.list().stream()
-                .map(y -> m.map(y, AgreementDTO.class))
+        List<AgreementGeneralDTO> list = aS.list().stream()
+                .map(y -> m.map(y, AgreementGeneralDTO.class))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(list);
@@ -217,4 +217,6 @@ public class AgreementController {
 
         return ResponseEntity.ok(listaBusqueda);
     }
+
+
 }
