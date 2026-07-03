@@ -2,6 +2,7 @@ package pe.edu.upc.divitime.servicesinterfaces;
 
 import pe.edu.upc.divitime.entities.Event;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +15,8 @@ public interface IEventService {
     List<Event> listEventsByFamily(int id);
     List<Event> listEventsByUser(int id);
     List<Event> listUpcomingByFamily(int idFamily);
+    List<Object[]> compararEventos(
+            int idFamily,
+            LocalDate fechaInicio,
+            LocalDate fechaFin);
 }

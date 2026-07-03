@@ -10,6 +10,7 @@ import pe.edu.upc.divitime.dtos.*;
 import pe.edu.upc.divitime.entities.Expense;
 import pe.edu.upc.divitime.entities.ExpenseType;
 import pe.edu.upc.divitime.entities.User;
+import pe.edu.upc.divitime.repositories.IUserRepository;
 import pe.edu.upc.divitime.servicesinterfaces.IExpenseService;
 import pe.edu.upc.divitime.servicesinterfaces.IExpenseTypeService;
 import pe.edu.upc.divitime.servicesinterfaces.IUserService;
@@ -185,40 +186,32 @@ public class ExpenseController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/compare-expenses")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
-    public List<String> compareExpensesByFamilyAndPeriod(
-            @RequestParam int familyId,
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
 
-        List<Object[]> results = eS.compareExpensesByFamilyAndPeriod(
-                familyId, startDate, endDate);
 
-        List<String> response = new ArrayList<>();
+    @GetMapping("/comparacion")
+    public List<UserExpenseDTO> compararGastos(
+            @RequestParam int idFamily,
+            @RequestParam LocalDate fechaInicio,
+            @RequestParam LocalDate fechaFin) {
 
-        if (results.size() >= 2) {
-            String user1 = (String) results.get(0)[0];
-            double amount1 = ((Number) results.get(0)[1]).doubleValue();
+        List<Object[]> lista = eS.compararGastos(
+                idFamily,
+                fechaInicio,
+                fechaFin);
 
-            String user2 = (String) results.get(1)[0];
-            double amount2 = ((Number) results.get(1)[1]).doubleValue();
+        List<UserExpenseDTO> respuesta = new ArrayList<>();
 
-            double difference = Math.abs(amount1 - amount2);
+        for (Object[] fila : lista) {
 
-            response.add(user1 + ": S/ " + amount1);
-            response.add(user2 + ": S/ " + amount2);
-            response.add("Diferencia: S/ " + difference);
-        } else if (results.size() == 1) {
-            String user = (String) results.get(0)[0];
-            double amount = ((Number) results.get(0)[1]).doubleValue();
+            UserExpenseDTO dto = new UserExpenseDTO();
 
-            response.add(user + ": S/ " + amount);
-            response.add("Diferencia: S/ 0.0");
-        } else {
-            response.add("No hay gastos registrados en el período indicado.");
+            dto.setUsuario((String) fila[0]);
+            dto.setTotalGastado(((Number) fila[1]).doubleValue());
+
+            respuesta.add(dto);
         }
 
-        return response;
+        return respuesta;
     }
+
 }

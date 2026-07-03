@@ -15,7 +15,7 @@ public class UserGeneralListDTO {
     private Boolean statusUser;
     private LocalDate accountCreatedDateUser;
     private int idRole;
-    private int idFamily;
+    private Integer idFamily;
 
     public int getIdUser() {
         return idUser;
@@ -77,9 +77,13 @@ public class UserGeneralListDTO {
 
     public void setIdRole(int idRole) { this.idRole = idRole; }
 
-    public int getIdFamily() { return idFamily; }
+    public Integer getIdFamily() {
+        return idFamily;
+    }
 
-    public void setIdFamily(int idFamily) { this.idFamily = idFamily; }
+    public void setIdFamily(Integer idFamily) {
+        this.idFamily = idFamily;
+    }
 
     public Boolean getStatusUser() {
         return statusUser;

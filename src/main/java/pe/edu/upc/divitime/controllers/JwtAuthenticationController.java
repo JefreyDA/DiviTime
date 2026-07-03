@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pe.edu.upc.divitime.dtos.JwtRequestDTO;
 import pe.edu.upc.divitime.dtos.JwtResponseDTO;
+import pe.edu.upc.divitime.entities.User;
+import pe.edu.upc.divitime.repositories.IUserRepository;
 import pe.edu.upc.divitime.securities.JwtTokenUtil;
 import pe.edu.upc.divitime.servicesimplements.JwtUserDetailsService;
 
@@ -25,6 +27,8 @@ public class JwtAuthenticationController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private JwtUserDetailsService userDetailsService;
+    @Autowired
+    private IUserRepository userRepository;
 
 
     @PostMapping("/login")
@@ -32,7 +36,9 @@ public class JwtAuthenticationController {
         authenticate(req.getUsername(), req.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponseDTO(token));
+        User user = userRepository.findOneByEmailUser(req.getUsername());
+        return ResponseEntity.ok(new JwtResponseDTO(token,user.getIdUser(),
+                user.getFamily().getIdFamily()));
     }
 
     private void authenticate(String username, String password) throws Exception {

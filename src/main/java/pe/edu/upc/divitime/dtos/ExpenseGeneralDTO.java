@@ -1,10 +1,14 @@
 package pe.edu.upc.divitime.dtos;
 
+import java.time.LocalDate;
+
 public class ExpenseGeneralDTO {
     private int idExpense;
     private double amountExpense;
     private String descriptionExpense;
     private String urlImageVoucherExpense;
+    private LocalDate dateExpense;
+    private Boolean statusExpense;
     private int idExpenseType;
     private int idUser;
 
@@ -54,5 +58,21 @@ public class ExpenseGeneralDTO {
 
     public void setIdUser(int idUser) {
         this.idUser = idUser;
+    }
+
+    public LocalDate getDateExpense() {
+        return dateExpense;
+    }
+
+    public void setDateExpense(LocalDate dateExpense) {
+        this.dateExpense = dateExpense;
+    }
+
+    public Boolean getStatusExpense() {
+        return statusExpense;
+    }
+
+    public void setStatusExpense(Boolean statusExpense) {
+        this.statusExpense = statusExpense;
     }
 }
