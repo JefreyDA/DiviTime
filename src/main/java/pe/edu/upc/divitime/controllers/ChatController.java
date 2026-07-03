@@ -75,7 +75,7 @@ public class ChatController {
     }
 
     @PostMapping("/register")
-    //@PreAuthorize("hasAnyAuthority('ADMIN', 'HIJO')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'HIJO')")
     public ResponseEntity<?> registrar(@RequestBody ChatGeneralDTO dto){
         if(dto.getIdUser() == 0 || dto.getStartDateChat() == null){
             return ResponseEntity.badRequest()
@@ -102,7 +102,7 @@ public class ChatController {
     }
 
     @GetMapping("/list-all-chats")
-    ////@PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<ChatGeneralDTO>> listAllChats(){
         ModelMapper m = new ModelMapper();
         List<ChatGeneralDTO> listChats = chS.list().stream()
@@ -112,7 +112,7 @@ public class ChatController {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> buscarPorId(@PathVariable int id){
         ModelMapper m = new ModelMapper();
         Optional<Chat> chat = chS.listId(id);
@@ -127,7 +127,7 @@ public class ChatController {
     }
 
     @PutMapping("/{idUser}/increase")
-    //@PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE DE FAMILIA', 'TUTOR LEGAL')")
     public ResponseEntity<?> incrementarFrecuenciaChat(@PathVariable int idUser){
         Optional<Chat> chatO = chS.findByUser_IdUser(idUser);
 

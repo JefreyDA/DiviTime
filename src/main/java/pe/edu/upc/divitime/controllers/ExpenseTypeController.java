@@ -27,7 +27,7 @@ public class ExpenseTypeController {
     private IExpenseTypeService etS;
 
     @PostMapping("/register-expense-type")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerExpenseType(@RequestBody ExpenseTypeGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
         ExpenseType c = m.map(dto, ExpenseType.class);
@@ -41,7 +41,7 @@ public class ExpenseTypeController {
     }
 
     @PutMapping("/update-expense-type")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updateExpenseType(@RequestBody ExpenseTypeGeneralDTO dto) {
         Optional<ExpenseType> exists = etS.listId(dto.getIdExpenseType());
         if (exists.isEmpty()) {
@@ -58,7 +58,7 @@ public class ExpenseTypeController {
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteExpenseType(@PathVariable int id) {
 
         Optional<ExpenseType> exists = etS.listId(id);
@@ -72,7 +72,7 @@ public class ExpenseTypeController {
     }
 
     @GetMapping("/list-expense-types")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<ExpenseTypeGeneralDTO>> listExpenseTypes() {
         ModelMapper m = new ModelMapper();
         List<ExpenseTypeGeneralDTO> listExpenseTypes = etS.list().stream()
@@ -82,7 +82,7 @@ public class ExpenseTypeController {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> listId(@PathVariable int id) {
         ModelMapper m = new ModelMapper();
         Optional<ExpenseType> agreementType = etS.listId(id);
