@@ -65,8 +65,12 @@ public class ExpenseServiceImplements implements IExpenseService {
     public List<Object[]> totalExpensesByFamilyMembersOnMonthAndYear(int idUser, int mes, int anio) {
         return iExpRep.totalExpensesByFamilyMembersOnMonthAndYear(idUser, mes, anio);
     }
+
+
     @Override
-    public List<Object[]> compareExpensesByFamilyAndPeriod(int familyId, LocalDate startDate, LocalDate endDate) {
-        return iExpRep.compareExpensesByFamilyAndPeriod(familyId,startDate,endDate);
+    public List<Object[]> compararGastos(int idUser, LocalDate fechaInicio, LocalDate fechaFin) {
+        return iExpRep.compararGastos( idUser,
+                fechaInicio,
+                fechaFin);
     }
 }

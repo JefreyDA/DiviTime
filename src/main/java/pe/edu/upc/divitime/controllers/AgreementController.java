@@ -33,7 +33,7 @@ public class AgreementController {
     private IAgreementTypeService atS;
 
     @GetMapping("/listAgreements")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<AgreementDTO>> list() {
 
         ModelMapper m = new ModelMapper();
@@ -46,7 +46,7 @@ public class AgreementController {
     }
 
     @PostMapping("/insert-agreement")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> insert(@RequestBody AgreementGeneralDTO dto) {
 
         ModelMapper m = new ModelMapper();
@@ -93,7 +93,7 @@ public class AgreementController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> SearchId(@PathVariable int id) {
 
         ModelMapper m = new ModelMapper();
@@ -117,7 +117,7 @@ public class AgreementController {
     }
 
     @PutMapping("/update-agreement")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> update(@RequestBody AgreementGeneralDTO dto) {
 
         Optional<Agreement> existe = aS.listId(dto.getIdAgreement());
@@ -168,7 +168,7 @@ public class AgreementController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> delete(@PathVariable int id) {
 
         Optional<Agreement> a = aS.listId(id);
@@ -187,7 +187,7 @@ public class AgreementController {
     }
 
     @GetMapping("/agreement-by-family/{idFamily}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> getAgreementFamily(@PathVariable int idFamily) {
 
         List<QueryAgreementByFamilyDTO> listaBusqueda =
