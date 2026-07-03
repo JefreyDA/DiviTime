@@ -22,5 +22,17 @@ public interface IChatInteractionRepository extends JpaRepository<ChatInteractio
             "GROUP BY c.id_chat, u.name_user", nativeQuery = true)
     List<Object[]> countWeeklyInteractions(@Param("idUser") int idUser,
                                            @Param("limitDate") LocalDate limitDate);
-
+    @Query(value = "SELECT c.id_chat, u.name_user, COUNT(ci.id_interaction) " +
+            "FROM chat c " +
+            "JOIN tb_user u ON c.id_user = u.id_user " +
+            "JOIN roles r ON u.id_role = r.id_role " +
+            "LEFT JOIN chat_interaction ci ON c.id_chat = ci.id_chat " +
+            "AND ci.interaction_date >= :limitDate " +
+            "AND ci.sender_role = 'USER' " +
+            "WHERE u.id_family = :idFamily " +
+            "AND r.name_role = 'HIJO' " +
+            "GROUP BY c.id_chat, u.name_user " +
+            "ORDER BY u.name_user", nativeQuery = true)
+    List<Object[]> countWeeklyInteractionsByFamily(@Param("idFamily") int idFamily,
+                                                   @Param("limitDate") LocalDate limitDate);
 }

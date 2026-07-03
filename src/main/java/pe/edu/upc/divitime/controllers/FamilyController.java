@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
     private IUserService uS;
 
     @GetMapping("/listFamilies")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<FamilyGeneralDTO>> list() {
 
         ModelMapper m = new ModelMapper();
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
     }
 
     @PostMapping("/insert-family")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> insert(@RequestBody FamilyGeneralDTO dto) {
 
         ModelMapper m = new ModelMapper();
@@ -81,7 +81,7 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> SearchById(@PathVariable int id) {
 
         ModelMapper m = new ModelMapper();
@@ -106,7 +106,7 @@ import java.util.stream.Collectors;
     }
 
     @PutMapping("/update")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> update(
             @RequestBody FamilyGeneralDTO dto) {
 
@@ -147,7 +147,7 @@ import java.util.stream.Collectors;
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> delete(@PathVariable int id) {
 
         Optional<Family> f = fS.listId(id);
@@ -166,7 +166,7 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/familias-by-dates")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getFamiliesByDate(
             @RequestParam LocalDate fechaInicio,
             @RequestParam LocalDate fechaFin) {

@@ -29,4 +29,9 @@ public class ChatInteractionServiceImplements implements IChatInteractionService
     public List<Object[]> countWeeklyInteractions(int idUser, LocalDate limitDate) {
         return ciR.countWeeklyInteractions(idUser, limitDate);
     }
+
+    @Override
+    public List<Object[]> countWeeklyInteractionsByFamily(int idFamily, LocalDate limitDate) {
+        return ciR.countWeeklyInteractionsByFamily(idFamily, limitDate);
+    }
 }

@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.divitime.dtos.UserGeneralDTO;
@@ -63,7 +64,7 @@ public class UserController {
     }
 
     @PutMapping("/update-user")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> updateUser(@RequestBody UserGeneralDTO dto) {
         Optional<User> exists = uS.listId(dto.getIdUser());
         if (exists.isEmpty()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado"); }
@@ -86,7 +87,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         Optional<User> user = uS.listId(id);
 
@@ -112,7 +113,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete-by-email/{emailUser}")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<String> deleteUserByEmail(@PathVariable String emailUser) {
         Optional<User> user = uS.findByEmailUser(emailUser);
 
@@ -130,7 +131,7 @@ public class UserController {
     }
 
     @GetMapping("/list-all-users")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserGeneralListDTO>> listAllUsers() {
         ModelMapper m = new ModelMapper();
         List<UserGeneralListDTO> listUsers = uS.list().stream()
@@ -140,7 +141,7 @@ public class UserController {
     }
 
     @GetMapping("/list-active-users")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserGeneralListDTO>> listActiveUsers() {
         ModelMapper m = new ModelMapper();
         List<UserGeneralListDTO> listActUsers = uS.findByStatusUserTrue().stream()
@@ -150,7 +151,7 @@ public class UserController {
     }
 
     @GetMapping("/list-inactive-users")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserGeneralListDTO>> listInactiveUsers() {
         ModelMapper m = new ModelMapper();
         List<UserGeneralListDTO> listInactUsers = uS.findByStatusUserFalse().stream()
@@ -160,7 +161,7 @@ public class UserController {
     }
 
     @GetMapping("/list-user-by-id/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listUserById(@PathVariable int id){
         ModelMapper m = new ModelMapper();
 

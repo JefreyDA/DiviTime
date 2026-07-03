@@ -22,7 +22,7 @@ public class AgreementTypeController {
     private IAgreementTypeService aTS;
 
     @GetMapping("/list-agreementType")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<AgreementTypeDTO>> list() {
         ModelMapper m = new ModelMapper();
         List<AgreementTypeDTO> listAgreementType = aTS.list().stream()
@@ -34,7 +34,7 @@ public class AgreementTypeController {
     }
 
     @PostMapping("/register-agreementType")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> insert(@RequestBody AgreementTypeGeneralDTO dto) {
         if (dto.getNameAgreementType() == null ||
                 dto.getNameAgreementType().trim().isEmpty()) {
@@ -58,7 +58,7 @@ public class AgreementTypeController {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> listId(@PathVariable int id) {
         ModelMapper m = new ModelMapper();
         Optional<AgreementType> agreementType = aTS.listId(id);
@@ -72,7 +72,7 @@ public class AgreementTypeController {
     }
 
     @PutMapping("/update-agreementType")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> update(@RequestBody AgreementTypeGeneralDTO dto) {
         Optional<AgreementType> exists = aTS.listId((dto.getIdAgreementType()));
         if (exists.isEmpty()) {
@@ -102,7 +102,7 @@ public class AgreementTypeController {
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable int id) {
         Optional<AgreementType> aT = aTS.listId(id);
         if (aT.isPresent()) {
