@@ -13,4 +13,7 @@ public interface IChatInteractionService {
 
     List<Object[]> countWeeklyInteractions(@Param("idUser") int idUser,
                                            @Param("limitDate") LocalDate limitDate);
+
+    List<Object[]> countWeeklyInteractionsByFamily(@Param("idFamily") int idFamily,
+                                                   @Param("limitDate") LocalDate limitDate);
 }

@@ -159,7 +159,7 @@ public class UserController {
         return ResponseEntity.ok(listInactUsers);
     }
 
-    @GetMapping("/list-user-by-id")
+    @GetMapping("/list-user-by-id/{id}")
     //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listUserById(@PathVariable int id){
         ModelMapper m = new ModelMapper();
@@ -170,7 +170,9 @@ public class UserController {
 
             UserGeneralListDTO dto = m.map(user.get(), UserGeneralListDTO.class);
             dto.setIdRole(user.get().getRoles().getIdRole());
-            dto.setIdFamily(user.get().getFamily().getIdFamily());
+            if (user.get().getFamily() != null) {
+                dto.setIdFamily(user.get().getFamily().getIdFamily());
+            }
 
             return ResponseEntity.ok(dto);
         }

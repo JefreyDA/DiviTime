@@ -41,6 +41,39 @@ public class ChatController {
     @Autowired
     private IChatBotService chatBotService;
 
+    //Funcion para que se cree un chat para un usuario con rol hijo
+    @GetMapping("/my-chat/{idUser}")
+    @PreAuthorize("hasAuthority('HIJO')")
+    public ResponseEntity<?> obtenerOCrearChatDelHijo(@PathVariable int idUser) {
+        Optional<User> userOpt = uS.listId(idUser);
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario no encontrado");
+        }
+
+        Optional<Chat> chatOpt = chS.findByUser_IdUser(idUser);
+        Chat chat;
+
+        if (chatOpt.isPresent()) {
+            chat = chatOpt.get();
+        } else {
+            chat = new Chat();
+            chat.setUser(userOpt.get());
+            chat.setStartDateChat(LocalDate.now());
+            chat.setFrequencyChat(0);
+            chat = chS.save(chat);
+        }
+
+        ChatGeneralDTO dto = new ChatGeneralDTO();
+        dto.setIdChat(chat.getIdChat());
+        dto.setStartDateChat(chat.getStartDateChat());
+        dto.setFrequencyChat(chat.getFrequencyChat());
+        dto.setIdUser(chat.getUser().getIdUser());
+
+        return ResponseEntity.ok(dto);
+    }
+
     @PostMapping("/register")
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'HIJO')")
     public ResponseEntity<?> registrar(@RequestBody ChatGeneralDTO dto){
@@ -68,15 +101,15 @@ public class ChatController {
                 .body(responseDTO);
     }
 
-        @GetMapping("/list-all-chats")
-        ////@PreAuthorize("hasAnyAuthority('ADMIN')")
-        public ResponseEntity<List<ChatGeneralDTO>> listAllChats(){
-            ModelMapper m = new ModelMapper();
-            List<ChatGeneralDTO> listChats = chS.list().stream()
-                    .map(y->m.map(y, ChatGeneralDTO.class))
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(listChats);
-        }
+    @GetMapping("/list-all-chats")
+    ////@PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<List<ChatGeneralDTO>> listAllChats(){
+        ModelMapper m = new ModelMapper();
+        List<ChatGeneralDTO> listChats = chS.list().stream()
+                .map(y->m.map(y, ChatGeneralDTO.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(listChats);
+    }
 
     @GetMapping("/{id}")
     //@PreAuthorize("hasAuthority('ADMIN')")
@@ -120,24 +153,24 @@ public class ChatController {
 
 
     @GetMapping("/recents-users")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> obtenerRecientes() {
         LocalDate fechaFiltro = LocalDate.now().minusMonths(1);
         List<Object[]> lista = chS.findNewChats(fechaFiltro);
 
         if(lista.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Ningún usuario registro un chat en el último mes.");
+            return ResponseEntity.ok(new ArrayList<ChatRecentUserDTO>());
         }
 
-            List<ChatRecentUserDTO> respuesta = new ArrayList<>();
+        List<ChatRecentUserDTO> respuesta = new ArrayList<>();
 
-            for (Object[] columna : lista) {
-                ChatRecentUserDTO dto = new ChatRecentUserDTO();
-                dto.setIdChat(((Number) columna[0]).intValue());
-                dto.setIdUser(((Number) columna[1]).intValue());
-                dto.setNameUser((String) columna[2]);
-                respuesta.add(dto);
-            }
+        for (Object[] columna : lista) {
+            ChatRecentUserDTO dto = new ChatRecentUserDTO();
+            dto.setIdChat(((Number) columna[0]).intValue());
+            dto.setIdUser(((Number) columna[1]).intValue());
+            dto.setNameUser((String) columna[2]);
+            respuesta.add(dto);
+        }
         return ResponseEntity.ok(respuesta);
     }
 
