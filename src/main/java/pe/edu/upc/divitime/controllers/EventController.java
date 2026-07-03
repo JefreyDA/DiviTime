@@ -155,7 +155,7 @@ public class EventController {
         }
 
         ModelMapper m = new ModelMapper();
-        List<EventDTO> list = events.stream().map(y->m.map(y, EventDTO.class))
+        List<EventGeneralDTO> list = events.stream().map(y->m.map(y, EventGeneralDTO.class))
                 .collect(Collectors.toList());
         return  ResponseEntity.ok(list);
     }
@@ -171,7 +171,7 @@ public class EventController {
         }
 
         ModelMapper m = new ModelMapper();
-        List<EventDTO> list = events.stream().map(y->m.map(y, EventDTO.class))
+        List<EventGeneralDTO> list = events.stream().map(y->m.map(y, EventGeneralDTO.class))
                 .collect(Collectors.toList());
         return  ResponseEntity.ok(list);
     }

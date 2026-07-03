@@ -25,11 +25,11 @@ public class RoleController {
     //Validar la existencia de solo cuatro roles: Padre / Madre / Tutor Legal / Hijo
 
     @GetMapping("/list-roles")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<RoleDTO>> listaRoles() {
+    //@PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<RoleGeneralDTO>> listaRoles() {
         ModelMapper m = new ModelMapper();
-        List<RoleDTO> listRoles = rS.list().stream()
-                .map(y -> m.map(y, RoleDTO.class))
+        List<RoleGeneralDTO> listRoles = rS.list().stream()
+                .map(y -> m.map(y, RoleGeneralDTO.class))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(listRoles);
@@ -37,7 +37,7 @@ public class RoleController {
     }
 
     @PostMapping("/insert-rol")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> insertRol(@RequestBody RoleGeneralDTO dto) {
         if (dto.getNameRole() == null ||
                 dto.getNameRole().trim().isEmpty()) {
@@ -75,7 +75,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> SeachById(@PathVariable int id) {
         ModelMapper m = new ModelMapper();
         Optional<Roles> role = rS.listId(id);
@@ -89,7 +89,7 @@ public class RoleController {
     }
 
     @PutMapping("/update-rol")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updateRol(@RequestBody RoleGeneralDTO dto) {
         Optional<Roles> exists = rS.listId((dto.getIdRole()));
         if (exists.isEmpty()) {
@@ -135,7 +135,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteRol(@PathVariable int id) {
         Optional<Roles> r = rS.listId(id);
         if (r.isPresent()) {

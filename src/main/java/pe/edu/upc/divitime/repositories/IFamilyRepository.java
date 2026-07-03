@@ -8,6 +8,7 @@ import pe.edu.upc.divitime.entities.Family;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IFamilyRepository extends JpaRepository<Family, Integer> {
@@ -16,5 +17,7 @@ public interface IFamilyRepository extends JpaRepository<Family, Integer> {
             @Param("fechaInicio") LocalDate fechaInicio,
             @Param("fechaFin") LocalDate fechaFin
     );
+
+    Optional<Family> findByLinkInvitationFamily(String linkInvitationFamily);
 }
 
