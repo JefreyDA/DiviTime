@@ -6,6 +6,7 @@ import pe.edu.upc.divitime.entities.Event;
 import pe.edu.upc.divitime.repositories.IEventRespository;
 import pe.edu.upc.divitime.servicesinterfaces.IEventService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,5 +53,13 @@ public class EventServiceImplement implements IEventService {
     @Override
     public List<Event> listUpcomingByFamily(int idFamily) {
         return eR.findUpcomingByFamily(idFamily);
+    }
+
+    @Override
+    public List<Object[]> compararEventos(int idFamily, LocalDate fechaInicio, LocalDate fechaFin) {
+        return eR.compararEventos(
+                idFamily,
+                fechaInicio,
+                fechaFin);
     }
 }

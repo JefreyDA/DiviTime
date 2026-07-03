@@ -90,19 +90,24 @@ public interface IExpenseRepository extends JpaRepository<Expense, Integer> {
             "ORDER BY total_gastado DESC;", nativeQuery = true)
     List<Object[]> totalExpensesByFamilyMembersOnMonthAndYear(@Param("idUser") int idUser, @Param("mes") int mes, @Param("anio") int anio);
 
-    @Query(value = "SELECT " +
-            " u.name_user AS usuario, " +
-            " SUM(e.amount_expense) AS totalGastado " +
-            " FROM expense e " +
-            " INNER JOIN tb_user u ON e.id_user = u.id_user " +
-            " WHERE e.status_expense = true " +
-            " AND e.id_family = :familyId " +
-            " AND e.date_expense BETWEEN :startDate AND :endDate " +
-            " GROUP BY u.id_user, u.name_user " +
-            " ORDER BY totalGastado DESC",
-            nativeQuery = true)
-    List<Object[]> compareExpensesByFamilyAndPeriod(
-            @Param("familyId") int familyId,
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate);
+
+
+    @Query("""
+        SELECT
+            u.nameUser,
+            SUM(e.amountExpense)
+        FROM Expense e
+        JOIN e.user u
+        WHERE u.family.idFamily = :idFamily
+        AND u.statusUser = true
+        AND e.statusExpense = true
+        AND u.roles.nameRole IN ('PADRE','TUTOR_LEGAL')
+        AND e.dateExpense BETWEEN :fechaInicio AND :fechaFin
+        GROUP BY u.idUser, u.nameUser
+        ORDER BY SUM(e.amountExpense) DESC
+    """)
+    List<Object[]> compararGastos(
+            @Param("idFamily") int idFamily,
+            @Param("fechaInicio") LocalDate fechaInicio,
+            @Param("fechaFin") LocalDate fechaFin);
 }
