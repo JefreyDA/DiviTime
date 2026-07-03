@@ -69,8 +69,11 @@ public class UserController {
         if (exists.isEmpty()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado"); }
 
         Optional<User> Tempuser = uS.findByEmailUser(dto.getEmailUser());
-        if (Tempuser.isPresent()) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Correo ya asociado a otro usuario"); }
+        if (Tempuser.isPresent()
+                && Tempuser.get().getIdUser() != dto.getIdUser()) {
 
+            return ResponseEntity.badRequest()
+                    .body("Correo ya asociado a otro usuario");}
         User u = exists.get();
         u.setNameUser(dto.getNameUser());
         u.setPaternalSurNameUser(dto.getPaternalSurNameUser());
@@ -120,9 +123,6 @@ public class UserController {
 
         User u = user.get();
 
-        List<Expense> expensesFounden = eS.searchByUser_IdUser(u.getIdUser());
-        for(Expense e : expensesFounden) {eS.deleteLogical(e);}
-
         u.setFamily(null);
         u.setStatusUser(false);
         uS.deleteLogical(u);
@@ -159,7 +159,7 @@ public class UserController {
         return ResponseEntity.ok(listInactUsers);
     }
 
-    @GetMapping("/list-user-by-id")
+    @GetMapping("/list-user-by-id/{id}")
     //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listUserById(@PathVariable int id){
         ModelMapper m = new ModelMapper();
@@ -170,11 +170,15 @@ public class UserController {
 
             UserGeneralListDTO dto = m.map(user.get(), UserGeneralListDTO.class);
             dto.setIdRole(user.get().getRoles().getIdRole());
-            dto.setIdFamily(user.get().getFamily().getIdFamily());
+
+            if (user.get().getFamily() != null) {
+                dto.setIdFamily(user.get().getFamily().getIdFamily());
+            }
+
+            dto.setPasswordUser(null);
 
             return ResponseEntity.ok(dto);
-        }
-        else{
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Usuario no encontrado");
         }
