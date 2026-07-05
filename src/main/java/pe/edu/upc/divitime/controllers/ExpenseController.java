@@ -36,7 +36,7 @@ public class ExpenseController {
     private IExpenseTypeService etS;
 
     @PostMapping("/register-expense")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> registerExpense(@RequestBody ExpenseGeneralDTO dto) {
         ModelMapper m = new ModelMapper();
         Expense c = m.map(dto, Expense.class);

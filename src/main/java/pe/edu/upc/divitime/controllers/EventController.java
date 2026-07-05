@@ -48,7 +48,7 @@ public class EventController {
     }
 
     @PostMapping("/register-events")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE', 'TUTOR_LEGAL')")
     public ResponseEntity<?> insert(@RequestBody EventGeneralDTO dto) {
 
         Optional<User> user = uS.listId(dto.getIdUser());
@@ -148,7 +148,7 @@ public class EventController {
     }
 
     @GetMapping("/list-events-by-family/{idFamily}")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL', 'HIJO')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL', 'HIJO')")
     public ResponseEntity<?> listEventsByFamily(@PathVariable("idFamily") int idFamily){
 
         List<Event> events  = eS.listEventsByFamily(idFamily);
@@ -180,6 +180,7 @@ public class EventController {
     }
 
     @GetMapping("/proximo-eventos-familia/{idFamily}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> ProximoEventos(@PathVariable int idFamily) {
 
         List<Event> events = eS.listUpcomingByFamily(idFamily);
