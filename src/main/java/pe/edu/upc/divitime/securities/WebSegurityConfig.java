@@ -81,7 +81,7 @@ public class WebSegurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/login", "/api/users/register-users", "/api/users/list-active-users","/api/roles/list-roles", "/api/users/list-all-users", "/v3/api-docs/**",
+                        .requestMatchers("/login","/api/users/list-by-email/{emailUser}", "/api/users/register-users", "/api/users/list-active-users","/api/roles/list-roles", "/api/users/list-all-users", "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()

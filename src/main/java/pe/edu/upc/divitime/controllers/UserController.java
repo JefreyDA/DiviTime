@@ -186,7 +186,7 @@ public class UserController {
     }
 
     @GetMapping("/list-by-email/{emailUser}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> getByEmail(@PathVariable String emailUser) {
         Optional<User> user = uS.findByEmailUser(emailUser);
 
