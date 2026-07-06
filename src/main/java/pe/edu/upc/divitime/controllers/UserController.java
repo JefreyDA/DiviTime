@@ -131,7 +131,7 @@ public class UserController {
     }
 
     @GetMapping("/list-all-users")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL', 'HIJO')")
     public ResponseEntity<List<UserGeneralListDTO>> listAllUsers() {
         ModelMapper m = new ModelMapper();
         List<UserGeneralListDTO> listUsers = uS.list().stream()
@@ -141,7 +141,7 @@ public class UserController {
     }
 
     @GetMapping("/list-active-users")
-    @PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<List<UserGeneralListDTO>> listActiveUsers() {
         ModelMapper m = new ModelMapper();
         List<UserGeneralListDTO> listActUsers = uS.findByStatusUserTrue().stream()
@@ -186,6 +186,7 @@ public class UserController {
     }
 
     @GetMapping("/list-by-email/{emailUser}")
+    //@PreAuthorize("hasAnyAuthority('ADMIN','PADRE','TUTOR_LEGAL')")
     public ResponseEntity<?> getByEmail(@PathVariable String emailUser) {
         Optional<User> user = uS.findByEmailUser(emailUser);
 

@@ -25,7 +25,7 @@ public class RoleController {
     //Validar la existencia de solo cuatro roles: Padre / Madre / Tutor Legal / Hijo
 
     @GetMapping("/list-roles")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<RoleGeneralDTO>> listaRoles() {
         ModelMapper m = new ModelMapper();
         List<RoleGeneralDTO> listRoles = rS.list().stream()
